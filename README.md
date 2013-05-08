@@ -85,7 +85,7 @@ For the following examples let's assume we supply this `config.json`.
 }
 ```
 
-__NOTE__: While converting the variables for JS, it strips all units (such as `px`, `%`, etc.) and also converts percenteges from `33px` to `0.33`.
+__NOTE__: While converting the variables for JS, it strips all units (such as `px`, `%`, etc.) and also converts percenteges from `33%` to `0.33`.
 
 #### AMD and SCSS files.
 The following task creates an AMD based JavaScript file and SCSS file.
