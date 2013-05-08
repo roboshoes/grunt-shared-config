@@ -1,6 +1,6 @@
 # grunt-shared-config
 
-> Create config files for SASS/SCSS and JS from one source
+> Create config files for CSS preprocessors (SASS/SCSS/LESS/Stylus) and JS from one source
 
 ## Getting Started
 This plugin requires Grunt `~0.4.0`
@@ -20,7 +20,7 @@ grunt.loadNpmTasks('grunt-shared-config');
 ## The "shared_config" task
 
 ### Overview
-This task helps you to create multiple config files in SCSS/SASS/JS/JS (AMD flavored).
+This task helps you to create multiple config files in SCSS/SASS/LESS/Stylus/JS/JS (AMD flavored).
 
 ### Options
 
@@ -160,4 +160,5 @@ var options = {
 
 
 ## Release History
+* 2013-05-08      v0.1.0      Added Stylus and LESS support
 * 2013-05-08      v0.0.1      Initial Release
