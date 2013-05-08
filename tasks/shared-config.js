@@ -26,20 +26,18 @@ module.exports = function( grunt ) {
 		// ===========
 
 		var normalizeOutArray = function( value ) {
-			if ( typeof value === "string" ) return [ value ];
-			else return value;
-		}
+			return typeof value === "string" ? [ value ] : value;
+		};
 
 		var normlizeFormat = function( value ) {
 			var possibles = [ "uppercase", "underscore", "camelcase", "dash" ];
 
-			if ( possibles.indexOf( value ) < 0 ) return possibles[ 0 ];
-			else return value;
-		}
+			return matches( possibles, value ) ? value : possibles[ 0 ];
+		};
 
 		var matches = function( arr, value ) {
 			return !!~arr.indexOf( value );
-		}
+		};
 
 		var format = function( value, type ) {
 
@@ -63,7 +61,7 @@ module.exports = function( grunt ) {
 
 			}
 
-		}
+		};
 
 
 		// ==============
@@ -131,16 +129,16 @@ module.exports = function( grunt ) {
 			}
 
 			return content;
-		}
+		};
 
 		var styleLine = function( key, value, type ) {
 			return outputPattern[ type ].replace('{{key}}', key).replace('{{value}}', value) + "\n";
-		}
+		};
 
 
 		// Generate JavaScript files
 
-		var generateJS = function( data ) {
+		var generateJS = function( data, type ) {
 			var content = "var " + options.name + " = ";
 			var prepedData = prepareValues( data );
 
@@ -148,7 +146,7 @@ module.exports = function( grunt ) {
 			content += ";\n";
 
 			return content;
-		}
+		};
 
 		var generateAMD = function( data ) {
 			var content = deepClone( template );
@@ -158,7 +156,7 @@ module.exports = function( grunt ) {
 			string = string.substr( 1, string.length - 2 );
 
 			return content.replace( "<<content>>", string );
-		}
+		};
 
 		var prepareValues = function( data ) {
 
@@ -183,7 +181,7 @@ module.exports = function( grunt ) {
 			}
 
 			return newData;
-		}
+		};
 
 
 		// ===================
@@ -193,20 +191,25 @@ module.exports = function( grunt ) {
 		options.out.forEach( function( file ) {
 
 			var fileType = file.split( "." ).pop().toLowerCase();
-			var output;
+			var output, generator;
 
+			// search for the correct generator by filetype
 			if ( matches( fileExtensions.css, fileType ) ) {
 
-				output = generateStyle( data, fileType );
+				generator = generateStyle;
 
 			} else if ( matches( fileExtensions.js, fileType ) ) {
 
-				if ( options.amd ) output = generateAMD( data );
-
-				else output = generateJS( data );
+				if( options.amd ) {
+					generator = generateAMD;
+				} else {
+					generator = generateJS;
+				}
 
 			}
 
+			// generate and save output
+			output = generator.apply( this, [ data, fileType ] );
 			grunt.file.write( file, output );
 
 			grunt.log.ok( "File: " + file + " created." );

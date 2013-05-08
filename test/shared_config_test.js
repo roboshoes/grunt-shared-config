@@ -9,7 +9,7 @@ exports.shared_config = {
 	},
 
 	style_options: function( test ) {
-		test.expect( 2 );
+		test.expect( 4 );
 
 		var actualSCSS = grunt.file.read( "tmp/config.scss" );
 		var expectedSCSS = grunt.file.read( "test/expected/config.scss" );
@@ -17,8 +17,16 @@ exports.shared_config = {
 		var actualSASS = grunt.file.read( "tmp/config.sass" );
 		var expectedSASS = grunt.file.read( "test/expected/config.sass" );
 
+		var actualLESS = grunt.file.read( "tmp/config.less" );
+		var expectedLESS = grunt.file.read( "test/expected/config.less" );
+
+		var actualStylus = grunt.file.read( "tmp/config.stylus" );
+		var expectedStylus = grunt.file.read( "test/expected/config.stylus" );
+
 		test.equal( actualSCSS, expectedSCSS, "SCSS should be equal." );
 		test.equal( actualSASS, expectedSASS, "SASS should be equal." );
+		test.equal( actualLESS, expectedLESS, "LESS should be equal." );
+		test.equal( actualStylus, expectedStylus, "Stylus should be equal." );
 
 		test.done();
 	},
