@@ -1,7 +1,7 @@
 /*
  * grunt-shared-config
  *
- * Use this task to create multiple config files for JS, JS-AMD, SCSS, SASS from one JSON.
+ * Use this task to create multiple config files for JS/JS-AMD, SCSS/SASS/LESS/stylus from one JSON.
  *
  * Copyright (c) 2013 Mathias Paumgarten
  * Licensed under the MIT license.
@@ -35,6 +35,10 @@ module.exports = function( grunt ) {
 
 			if ( possibles.indexOf( value ) < 0 ) return possibles[ 0 ];
 			else return value;
+		}
+
+		var matches = function( arr, value ) {
+			return !!~arr.indexOf( value );
 		}
 
 		var format = function( value, type ) {
@@ -77,6 +81,22 @@ module.exports = function( grunt ) {
 			out: []
 		} );
 
+		// available file extensions
+
+		var fileExtensions = {
+			js: [ "js" ],
+			css: [ "scss", "sass", "less", "stylus" ]
+		};
+
+		// variable patterns
+
+		var outputPattern = {
+			scss: "${{key}}: {{value}};",
+			sass: "${{key}}: {{value}}",
+			less: "@{{key}}: {{value}};",
+			stylus: "{{key}} = {{value}}"
+		};
+
 
 		// Normalize user input
 
@@ -103,9 +123,9 @@ module.exports = function( grunt ) {
 
 		var generateStyle = function( data, type ) {
 			var content = "";
-			var name;
+			var name, key;
 
-			for ( var key in data ) {
+			for ( key in data ) {
 				name = format( key, options.cssFormat );
 				content += styleLine( name, data[ key ], type );
 			}
@@ -114,7 +134,7 @@ module.exports = function( grunt ) {
 		}
 
 		var styleLine = function( key, value, type ) {
-			return "$" + key + ": " + value + ( type === "sass" ? "" : ";" ) + "\n";
+			return outputPattern[ type ].replace('{{key}}', key).replace('{{value}}', value) + "\n";
 		}
 
 
@@ -175,11 +195,11 @@ module.exports = function( grunt ) {
 			var fileType = file.split( "." ).pop().toLowerCase();
 			var output;
 
-			if ( fileType === "scss" || fileType === "sass" ) {
+			if ( matches( fileExtensions.css, fileType ) ) {
 
 				output = generateStyle( data, fileType );
 
-			} else if ( fileType === "js" ) {
+			} else if ( matches( fileExtensions.js, fileType ) ) {
 
 				if ( options.amd ) output = generateAMD( data );
 
