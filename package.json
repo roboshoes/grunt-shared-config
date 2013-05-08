@@ -1,13 +1,19 @@
 {
   "name": "grunt-shared-config",
-  "description": "Create config files for SASS/SCSS and JS from one source",
-  "version": "0.0.1",
+  "description": "Create config files for SASS/SCSS/LESS/Stylus and JS from one source",
+  "version": "0.1.0",
   "homepage": "",
   "author": {
     "name": "Mathias Paumgarten",
     "email": "mail@mathias-paumgarten.com",
     "url": "http://mathias-paumgarten.com"
   },
+  "contributors": [ 
+    {
+      "name": "Tobias Klika",
+      "email": "cee@live.at"
+    } 
+  ],
   "repository": {
     "type": "git",
     "url": "none"
