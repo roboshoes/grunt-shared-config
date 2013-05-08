@@ -14,7 +14,7 @@ npm install grunt-shared-config --save-dev
 One the plugin has been installed, it may be enabled inside your Gruntfile with this line of JavaScript:
 
 ```js
-grunt.loadNpmTasks('grunt-shared-config');
+grunt.loadNpmTasks( "grunt-shared-config" );
 ```
 
 ## The "shared_config" task
