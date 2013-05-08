@@ -1,51 +1,57 @@
 {
-	"name": "grunt-shared-config",
-	"description": "Create config files for SASS/SCSS and JS from one source",
-	"version": "0.0.1",
-	"homepage": "",
-	"author": {
-		"name": "Mathias Paumgarten",
-		"email": "mail@mathias-paumgarten.com",
-		"url": "http://mathias-paumgarten.com"
-	},
-	"repository": {
-		"type": "git",
-		"url": "none"
-	},
-	"bugs": {
-		"url": ""
-	},
-	"licenses": [
-		{
-			"type": "MIT",
-			"url": "/blob/master/LICENSE-MIT"
-		}
-	],
-	"main": "Gruntfile.js",
-	"engines": {
-		"node": ">= 0.8.0"
-	},
-	"scripts": {
-		"test": "grunt test"
-	},
-	"devDependencies": {
-		"grunt-contrib-jshint": "~0.1.1",
-		"grunt-contrib-clean": "~0.4.0",
-		"grunt-contrib-nodeunit": "~0.1.2",
-		"grunt": "~0.4.1"
-	},
-	"peerDependencies": {
-		"grunt": "~0.4.0"
-	},
-	"dependencies": {
-		"mout": "~0.5.0"
-	},
-	"keywords": [
-		"gruntplugin",
-		"sass",
-		"scss",
-		"generator",
-		"shared",
-		"config"
-	]
+  "name": "grunt-shared-config",
+  "description": "Create config files for SASS/SCSS/LESS/Stylus and JS from one source",
+  "version": "0.1.0",
+  "homepage": "",
+  "author": {
+    "name": "Mathias Paumgarten",
+    "email": "mail@mathias-paumgarten.com",
+    "url": "http://mathias-paumgarten.com"
+  },
+  "contributors": [ 
+    {
+      "name": "Tobias Klika",
+      "email": "cee@live.at"
+    } 
+  ],
+  "repository": {
+    "type": "git",
+    "url": "none"
+  },
+  "bugs": {
+    "url": ""
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "/blob/master/LICENSE-MIT"
+    }
+  ],
+  "main": "Gruntfile.js",
+  "engines": {
+    "node": ">= 0.8.0"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "devDependencies": {
+    "grunt-contrib-jshint": "~0.1.1",
+    "grunt-contrib-clean": "~0.4.0",
+    "grunt-contrib-nodeunit": "~0.1.2",
+    "grunt": "~0.4.1"
+  },
+  "peerDependencies": {
+    "grunt": "~0.4.0"
+  },
+  "dependencies": {
+    "mout": "~0.5.0"
+  },
+  "keywords": [
+    "gruntplugin",
+    "sass",
+    "scss",
+    "generator",
+    "shared",
+    "config"
+  ]
 }
