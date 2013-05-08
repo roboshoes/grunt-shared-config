@@ -121,18 +121,15 @@ module.exports = function( grunt ) {
 
 		var generateStyle = function( data, type ) {
 			var content = "";
+			var pattern = outputPattern[ type ];
 			var name, key;
 
 			for ( key in data ) {
 				name = format( key, options.cssFormat );
-				content += styleLine( name, data[ key ], type );
+				content += pattern.replace( '{{key}}', name ).replace( '{{value}}', data[ key ] ) + "\n";
 			}
 
 			return content;
-		};
-
-		var styleLine = function( key, value, type ) {
-			return outputPattern[ type ].replace('{{key}}', key).replace('{{value}}', value) + "\n";
 		};
 
 
