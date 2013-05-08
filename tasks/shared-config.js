@@ -83,7 +83,7 @@ module.exports = function( grunt ) {
 
 		var fileExtensions = {
 			js: [ "js" ],
-			css: [ "scss", "sass", "less", "stylus" ]
+			css: [ "scss", "sass", "less", "styl" ]
 		};
 
 		// variable patterns
@@ -92,7 +92,7 @@ module.exports = function( grunt ) {
 			scss: "${{key}}: {{value}};",
 			sass: "${{key}}: {{value}}",
 			less: "@{{key}}: {{value}};",
-			stylus: "{{key}} = {{value}}"
+			styl: "{{key}} = {{value}}"
 		};
 
 

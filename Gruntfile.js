@@ -40,7 +40,7 @@ module.exports = function( grunt ) {
 						"tmp/config.scss",
 						"tmp/config.sass",
 						"tmp/config.less",
-						"tmp/config.stylus"
+						"tmp/config.styl"
 					]
 				},
 

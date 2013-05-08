@@ -20,8 +20,8 @@ exports.shared_config = {
 		var actualLESS = grunt.file.read( "tmp/config.less" );
 		var expectedLESS = grunt.file.read( "test/expected/config.less" );
 
-		var actualStylus = grunt.file.read( "tmp/config.stylus" );
-		var expectedStylus = grunt.file.read( "test/expected/config.stylus" );
+		var actualStylus = grunt.file.read( "tmp/config.styl" );
+		var expectedStylus = grunt.file.read( "test/expected/config.styl" );
 
 		test.equal( actualSCSS, expectedSCSS, "SCSS should be equal." );
 		test.equal( actualSASS, expectedSASS, "SASS should be equal." );
