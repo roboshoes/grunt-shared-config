@@ -15,6 +15,7 @@ var underscore = require( "mout/string/underscore" );
 var deepClone = require( "mout/lang/deepClone" );
 var endsWith = require( "mout/string/endsWith" );
 var typecast = require( "mout/string/typecast" );
+var extend = require( "extend" );
 
 module.exports = function( grunt ) {
 
@@ -51,6 +52,14 @@ module.exports = function( grunt ) {
 			}
 		};
 
+		var fileExists = function( filePath ) {
+			if ( !grunt.file.exists( filePath ) ) {
+				grunt.log.warn( "Source file (" + filePath + ") not found." );
+				return false;
+			}
+			return true;
+		};
+
 
 
 		// ==============
@@ -59,12 +68,12 @@ module.exports = function( grunt ) {
 
 		// default options
 		var options = this.options( {
-			amd: true,
+			amd: false,
 			config: "",
 			jsFormat: "uppercase",
 			cssFormat: "dash",
 			name: "config",
-			out: []
+			dest: []
 		} );
 
 		// possible variable formats
@@ -87,12 +96,9 @@ module.exports = function( grunt ) {
 		};
 
 		// Normalize user input
-		options.out = normalizeOutArray( options.out );
+		options.dest = normalizeOutArray( options.dest );
 		options.jsFormat = normalizeFormat( options.jsFormat );
 		options.cssFormat = normalizeFormat( options.cssFormat );
-
-		// JSON containing vars
-		var data = grunt.file.readJSON( options.config );
 
 
 
@@ -141,9 +147,9 @@ module.exports = function( grunt ) {
 				value = data[ key ];
 
 				if ( endsWith( value, "%" ) ) {
-					value = parseInt( value ) / 100;
+					value = parseInt( value, 10 ) / 100;
 				} else {
-					value = parseInt( value );
+					value = parseInt( value, 10 );
 				}
 
 				newData[ format( key, options.jsFormat ) ] = value;
@@ -157,33 +163,51 @@ module.exports = function( grunt ) {
 		// -- SHARED CONFIG --
 		// ===================
 
-		options.out.forEach( function( file ) {
+		this.files.forEach( function( file ) {
 
-			var fileType = file.split( "." ).pop().toLowerCase();
-			var output, generator;
+			var srcConfig = {};
+			var destinationFiles = normalizeOutArray( file.dest );
 
-			// search for the correct generator by filetype
-			if ( existsIn( fileExtensions.css, fileType ) ) {
+			file.src.filter( fileExists ).map( function( filePath ) {
 
-				generator = generateStyle;
+				// fetch JSON from file
+				var src = grunt.file.readJSON( filePath );
+				
+				// add configuration vars to main config
+				extend( true, srcConfig, src );
 
-			} else if ( existsIn( fileExtensions.js, fileType ) ) {
+			} );
 
-				generator = options.amd ? generateAMD : generateJS;
 
-			} else {
+			destinationFiles.map( function( filePath ) {
 
-				grunt.log.error( "Unknown filetype (" + fileType + ")." );
+				var fileType = filePath.split( "." ).pop().toLowerCase();
+				var output, generator;
 
-			}
+				// search for the correct generator by filetype
+				if ( existsIn( fileExtensions.css, fileType ) ) {
 
-			// generate and save output
-			output = generator.apply( this, [ data, fileType ] );
-			grunt.file.write( file, output );
+					generator = generateStyle;
 
-			grunt.log.ok( "File: " + file + " created." );
+				} else if ( existsIn( fileExtensions.js, fileType ) ) {
+
+					generator = options.amd ? generateAMD : generateJS;
+
+				} else {
+
+					grunt.log.warn( "Unknown filetype (" + fileType + ")." );
+					return false;
+				}
+
+				// generate and save output
+				output = generator.apply( null, [ srcConfig, fileType ] );
+				grunt.file.write( filePath, output );
+
+				grunt.log.ok( "File: " + filePath + " created." );
+			} );
 
 		} );
+
 
 	} );
 
