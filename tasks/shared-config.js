@@ -15,6 +15,7 @@ var underscore = require( "mout/string/underscore" );
 var deepClone = require( "mout/lang/deepClone" );
 var endsWith = require( "mout/string/endsWith" );
 var typecast = require( "mout/string/typecast" );
+var contains = require( "mout/array/contains" );
 
 module.exports = function( grunt ) {
 
@@ -32,11 +33,7 @@ module.exports = function( grunt ) {
 		var normlizeFormat = function( value ) {
 			var possibles = [ "uppercase", "underscore", "camelcase", "dash" ];
 
-			return matches( possibles, value ) ? value : possibles[ 0 ];
-		};
-
-		var matches = function( arr, value ) {
-			return !!~arr.indexOf( value );
+			return contains( possibles, value ) ? value : possibles[ 0 ];
 		};
 
 		var format = function( value, type ) {
@@ -79,12 +76,14 @@ module.exports = function( grunt ) {
 			out: []
 		} );
 
+
 		// available file extensions
 
 		var fileExtensions = {
 			js: [ "js" ],
 			css: [ "scss", "sass", "less", "styl" ]
 		};
+
 
 		// variable patterns
 
@@ -191,11 +190,11 @@ module.exports = function( grunt ) {
 			var output, generator;
 
 			// search for the correct generator by filetype
-			if ( matches( fileExtensions.css, fileType ) ) {
+			if ( contains( fileExtensions.css, fileType ) ) {
 
 				generator = generateStyle;
 
-			} else if ( matches( fileExtensions.js, fileType ) ) {
+			} else if ( contains( fileExtensions.js, fileType ) ) {
 
 				if( options.amd ) {
 					generator = generateAMD;
