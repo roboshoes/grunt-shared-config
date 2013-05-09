@@ -93,15 +93,22 @@ The following task creates an AMD based JavaScript file and SCSS file.
 ```js
 grunt.initConfig( {
 	shared_config: {
-		options: {
-			config: "config.json",
-			jsFormat: "uppercase",
-			cssFormat: "dash"
-			out: [
-				"scripts/config.js",
-				"styles/config.scss"
+		default: {
+			options: {
+				name: "globalConfig",
+				cssFormat: "dash",
+				jsFormat: "underscore",
+				amd: true
+			},
+			src: "config.json",
+			dest: [
+				"styles/config.scss",
+				"styles/config.sass",
+				"styles/config.less",
+				"styles/config.styl",
+				"scripts/config.js"
 			]
-		}
+		},
 	}
 } )
 ```
@@ -136,14 +143,11 @@ The following task creates a plain JS file.
 grunt.initConfig( {
 	shared_config: {
 		options: {
-			config: "config.json",
-			jsFormat: "underscore",
-			amd: false,
 			name: "options",
-			out: [
-				"scripts/config.js"
-			]
-		}
+			jsFormat: "underscore"
+		},
+		src: "config.json",
+		dest: "scripts/config.js"
 	}
 } )
 ```
@@ -160,5 +164,6 @@ var options = {
 
 
 ## Release History
+* 2013-05-08      v0.2.0      new configuration (with respect to the grunt conventions)
 * 2013-05-08      v0.1.0      Added Stylus and LESS support
 * 2013-05-08      v0.0.1      Initial Release
