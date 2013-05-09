@@ -20,7 +20,6 @@ module.exports = function( grunt ) {
 
 	grunt.registerMultiTask( "shared_config", "Your task description goes here.", function() {
 
-
 		// ===========
 		// -- UTILS --
 		// ===========
@@ -29,39 +28,29 @@ module.exports = function( grunt ) {
 			return typeof value === "string" ? [ value ] : value;
 		};
 
-		var normlizeFormat = function( value ) {
-			var possibles = [ "uppercase", "underscore", "camelcase", "dash" ];
-
-			return matches( possibles, value ) ? value : possibles[ 0 ];
-		};
-
-		var matches = function( arr, value ) {
+		var existsIn = function( arr, value ) {
 			return !!~arr.indexOf( value );
 		};
 
-		var format = function( value, type ) {
+		var normalizeFormat = function( value ) {
+			return existsIn( varFormats, value ) ? value : varFormats[ 0 ];
+		};
 
+		var format = function( value, type ) {
 			value = value.replace( /-/g, " " );
 
-			if ( type === "underscore" ) {
-
+			switch ( type ) {
+			case "underscore":
 				return underscore( value );
-
-			}  else if ( type === "uppercase" ) {
-
+			case "uppercase":
 				return value.toUpperCase().replace( / /g, "_" );
-
-			} else if ( type === "camelcase" ) {
-
-				return camelCase( value );
-
-			} else if ( type === "dash" ) {
-
+			case "dash":
 				return hyphenate( value );
-
+			default:
+				return camelCase( value );
 			}
-
 		};
+
 
 
 		// ==============
@@ -69,7 +58,6 @@ module.exports = function( grunt ) {
 		// ==============
 
 		// default options
-
 		var options = this.options( {
 			amd: true,
 			config: "",
@@ -79,38 +67,33 @@ module.exports = function( grunt ) {
 			out: []
 		} );
 
-		// available file extensions
+		// possible variable formats
+		var varFormats = [ "underscore", "uppercase", "dash", "camelcase" ];
 
+		// available file extensions
 		var fileExtensions = {
 			js: [ "js" ],
 			css: [ "scss", "sass", "less", "styl" ]
 		};
 
 		// variable patterns
-
 		var outputPattern = {
-			scss: "${{key}}: {{value}};",
-			sass: "${{key}}: {{value}}",
-			less: "@{{key}}: {{value}};",
-			styl: "{{key}} = {{value}}"
+			scss: "${{key}}: {{value}};\n",
+			sass: "${{key}}: {{value}}\n",
+			less: "@{{key}}: {{value}};\n",
+			styl: "{{key}} = {{value}}\n",
+			amd:  "define( function() {\n\n\treturn {{{vars}}\t}\n\n} );\n",
+			js:   "var {{name}} = {{vars}};\n"
 		};
 
-
 		// Normalize user input
-
 		options.out = normalizeOutArray( options.out );
-		options.jsFormat = normlizeFormat( options.jsFormat );
-		options.cssFormat = normlizeFormat( options.cssFormat );
-
+		options.jsFormat = normalizeFormat( options.jsFormat );
+		options.cssFormat = normalizeFormat( options.cssFormat );
 
 		// JSON containing vars
-
 		var data = grunt.file.readJSON( options.config );
 
-
-		// AMD template
-
-		var template = "define( function() {\n\n\treturn {<<content>>\t}\n\n} );\n";
 
 
 		// ================
@@ -118,7 +101,6 @@ module.exports = function( grunt ) {
 		// ================
 
 		// Generate Style files
-
 		var generateStyle = function( data, type ) {
 			var content = "";
 			var pattern = outputPattern[ type ];
@@ -126,7 +108,7 @@ module.exports = function( grunt ) {
 
 			for ( key in data ) {
 				name = format( key, options.cssFormat );
-				content += pattern.replace( '{{key}}', name ).replace( '{{value}}', data[ key ] ) + "\n";
+				content += pattern.replace( '{{key}}', name ).replace( '{{value}}', data[ key ] );
 			}
 
 			return content;
@@ -134,44 +116,34 @@ module.exports = function( grunt ) {
 
 
 		// Generate JavaScript files
-
 		var generateJS = function( data, type ) {
-			var content = "var " + options.name + " = ";
-			var prepedData = prepareValues( data );
+			var preparedData = prepareValues( data );
+			var content = JSON.stringify( preparedData, null, "\t" );
 
-			content += JSON.stringify( prepedData, null, "\t" );
-			content += ";\n";
-
-			return content;
+			return outputPattern.js.replace( '{{name}}', options.name ).replace( '{{vars}}', content );
 		};
 
 		var generateAMD = function( data ) {
-			var content = deepClone( template );
-			var prepedData = prepareValues( data );
-			var string = JSON.stringify( prepedData, null, "\t\t" );
+			var preparedData = prepareValues( data );
+			var content = JSON.stringify( preparedData, null, "\t\t" );
+			var pattern = deepClone( outputPattern.amd );
 
-			string = string.substr( 1, string.length - 2 );
+			content = content.substr( 1, content.length - 2 );
 
-			return content.replace( "<<content>>", string );
+			return pattern.replace( "{{vars}}", content );
 		};
 
 		var prepareValues = function( data ) {
-
 			var newData = {};
 			var key, value;
 
 			for ( key in data ) {
-
 				value = data[ key ];
 
 				if ( endsWith( value, "%" ) ) {
-
-					value = typecast( value.substr( 0, value.length - 1 ) ) / 100;
-
+					value = parseInt( value ) / 100;
 				} else {
-
-					value = typecast( value.replace( /[^0-9.]/g, "" ) );
-
+					value = parseInt( value );
 				}
 
 				newData[ format( key, options.jsFormat ) ] = value;
@@ -191,17 +163,17 @@ module.exports = function( grunt ) {
 			var output, generator;
 
 			// search for the correct generator by filetype
-			if ( matches( fileExtensions.css, fileType ) ) {
+			if ( existsIn( fileExtensions.css, fileType ) ) {
 
 				generator = generateStyle;
 
-			} else if ( matches( fileExtensions.js, fileType ) ) {
+			} else if ( existsIn( fileExtensions.js, fileType ) ) {
 
-				if( options.amd ) {
-					generator = generateAMD;
-				} else {
-					generator = generateJS;
-				}
+				generator = options.amd ? generateAMD : generateJS;
+
+			} else {
+
+				grunt.log.error( "Unknown filetype (" + fileType + ")." );
 
 			}
 
