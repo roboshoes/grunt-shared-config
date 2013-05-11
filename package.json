@@ -1,7 +1,7 @@
 {
   "name": "grunt-shared-config",
   "description": "Create config files for SASS/SCSS/LESS/Stylus and JS from one source",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "homepage": "https://github.com/MathiasPaumgarten/grunt-shared-config",
   "author": {
     "name": "Mathias Paumgarten",
@@ -44,7 +44,8 @@
     "grunt": "~0.4.0"
   },
   "dependencies": {
-    "mout": "~0.5.0"
+    "mout": "~0.5.0",
+    "extend": "~1.1.3"
   },
   "keywords": [
     "gruntplugin",
