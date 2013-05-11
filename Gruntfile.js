@@ -30,46 +30,62 @@ module.exports = function( grunt ) {
 		},
 
 		shared_config: {
-
-			styles: {
+			default: {
 				options: {
-					config: "test/fixtures/config.json",
+					name: "globalConfig",
 					cssFormat: "dash",
-
-					out: [
-						"tmp/config.scss",
-						"tmp/config.sass",
-						"tmp/config.less",
-						"tmp/config.styl"
-					]
+					jsFormat: "underscore"
 				},
-
+				src: [
+					"test/fixtures/config.json",
+					"test/fixtures/config1.json"
+				],
+				dest: [
+					"tmp/config.scss",
+					"tmp/config.sass",
+					"tmp/config.less",
+					"tmp/config.styl",
+					"tmp/config.js"
+				]
 			},
 
-			amd: {
+			amdTest: {
 				options: {
-					config: "test/fixtures/config.json",
-					amd: true,
+					name: "globalConfig",
 					jsFormat: "uppercase",
-					out: [
-						"tmp/config-amd.js",
-					]
-				}
+					amd: true
+				},
+				src: [
+					"test/fixtures/config.json",
+					"test/fixtures/config1.json"
+				],
+				dest: "tmp/config-amd.js"
 			},
 
-			js: {
+			filesTest: {
 				options: {
-					config: "test/fixtures/config.json",
-					amd: false,
-					jsFormat: "underscore",
-					name: "options",
-					out: [
-						"tmp/config.js",
-					]
+					name: "globalConfig",
+					cssFormat: "camelcase",
+					jsFormat: "camelcase"
 				},
-
+				files: [
+					{
+						src: "test/fixtures/config1.json",
+						dest: [
+							"tmp/config1.scss",
+							"tmp/config1.less"
+						]
+					},{
+						src: [
+							"test/fixtures/config.json",
+							"test/fixtures/config1.json"
+						],
+						dest: [
+							"tmp/config1.js"
+						]
+					}
+				]
 			}
-
 		},
 
 		nodeunit: {
