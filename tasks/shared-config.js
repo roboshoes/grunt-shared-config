@@ -66,11 +66,9 @@ module.exports = function( grunt ) {
 		// default options
 		var options = this.options( {
 			amd: false,
-			config: "",
 			jsFormat: "uppercase",
 			cssFormat: "dash",
-			name: "config",
-			dest: []
+			name: "config"
 		} );
 
 		// possible variable formats

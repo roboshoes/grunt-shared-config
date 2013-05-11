@@ -24,18 +24,6 @@ This task helps you to create multiple config files in SCSS/SASS/LESS/Stylus/JS/
 
 ### Options
 
-#### options.config
-Type: `String`
-
-A string value representing the JSON file containing the shared variables.
-
-
-#### options.out
-Type: `Array`
-
-This array contains all files that need to be generated from the `options.config` input.
-
-
 #### options.cssFormat
 Type: `String`
 Default value: `"dash"`
@@ -58,7 +46,7 @@ Same as `options.cssFormat` but for js files.
 
 #### options.amd
 Type: `Boolean`
-Default value: `true`
+Default value: `false`
 
 Defines weather or not JS files are written in AMD style or as plain objects.
 
@@ -67,8 +55,27 @@ Defines weather or not JS files are written in AMD style or as plain objects.
 Type: `String`
 Default value: `options`
 
-This value is only relevant if `options.amd` is set to `false`. This String determines the name of the config object.
+This value is only relevant if `options.amd` is set to `false`. This String determines the name of the config object (for JavaScript).
 
+### Options (Files)
+
+
+#### src
+Type: `String` or `Array`
+
+Contains a single config file (JSON) or an array of files.
+
+
+#### dest
+Type: `String` or `Array`
+
+Contains all output files. Format is detected by file extension. *Available extension: `.js`, `.sass`, `.scss`, `.styl`, `.less`*
+
+
+#### files
+Type: `Array`
+
+This array can be used as a substitution for `src` and `dest` to allow multi-processing per task.
 
 
 ### Usage Examples
@@ -88,7 +95,7 @@ For the following examples let's assume we supply this `config.json`.
 __NOTE__: While converting the variables for JS, it strips all units (such as `px`, `%`, etc.) and also converts percenteges from `33%` to `0.33`.
 
 #### AMD and SCSS files.
-The following task creates an AMD based JavaScript file and SCSS file.
+The following task creates an AMD based JavaScript file and all available CSS preprocessor format files.
 
 ```js
 grunt.initConfig( {
@@ -97,7 +104,7 @@ grunt.initConfig( {
 			options: {
 				name: "globalConfig",
 				cssFormat: "dash",
-				jsFormat: "underscore",
+				jsFormat: "camelcase",
 				amd: true
 			},
 			src: "config.json",
@@ -142,12 +149,14 @@ The following task creates a plain JS file.
 ```js
 grunt.initConfig( {
 	shared_config: {
-		options: {
-			name: "options",
-			jsFormat: "underscore"
-		},
-		src: "config.json",
-		dest: "scripts/config.js"
+        default: {
+            options: {
+                name: "options",
+                jsFormat: "underscore"
+            },
+            src: "config.json",
+            dest: "scripts/config.js"
+        }
 	}
 } )
 ```
@@ -163,7 +172,48 @@ var options = {
 ```
 
 
+#### Multiprocessing per Task
+The following task allows processing of processing of multiple config files with seperate outputs using the `files` option.
+
+```js
+grunt.initConfig( {
+	shared_config: {
+        filesTest: {
+			options: {
+				name: "globalConfig",
+				cssFormat: "camelcase",
+				jsFormat: "camelcase"
+			},
+			files: [
+				{
+					src: "config.json",
+					dest: [
+						"styles/config.scss",
+						"styles/config.less"
+					]
+				},{
+					src: [
+						"config.json",
+						"config1.json"
+					],
+					dest: [
+						"styles/config1.scss",
+						"scripts/config.js"
+					]
+				}
+			]
+		}
+    }
+} )
+```
+
+
 ## Release History
-* 2013-05-08      v0.2.0      new configuration (with respect to the grunt conventions)
+* 2013-05-11      v0.2.0      new configuration (with respect to the grunt conventions)
 * 2013-05-08      v0.1.0      Added Stylus and LESS support
 * 2013-05-08      v0.0.1      Initial Release
+
+
+## Contributors
+* [@MathiasPaumgarten](https://github.com/MathiasPaumgarten) Mathias Paumgarten
+* [@cee](https://github.com/ceee) Tobias Klika
