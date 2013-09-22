@@ -90,7 +90,7 @@ module.exports = function( grunt ) {
 
 		nodeunit: {
 			tests: [ "test/*_test.js" ],
-		},
+		}
 
 	} );
 
@@ -101,7 +101,7 @@ module.exports = function( grunt ) {
 	grunt.loadNpmTasks( "grunt-contrib-clean" );
 	grunt.loadNpmTasks( "grunt-contrib-nodeunit" );
 
-	grunt.registerTask( "test", [ "clean", "shared_config", "nodeunit" ] );
-	grunt.registerTask( "default", [ "jshint", "test" ] );
+	grunt.registerTask( "test", [ "clean", "jshint", "shared_config", "nodeunit" ] );
+	grunt.registerTask( "default", [ "test" ] );
 
 };

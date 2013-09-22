@@ -1,5 +1,7 @@
 # grunt-shared-config
 
+[![Build Status](https://travis-ci.org/MathiasPaumgarten/grunt-shared-config.png?branch=master)](https://travis-ci.org/MathiasPaumgarten/grunt-shared-config)
+
 > Create config files for CSS preprocessors (SASS/SCSS/LESS/Stylus) and JS from one source
 
 ## Getting Started
@@ -33,8 +35,8 @@ One of four possible types: `"dash"`, `"underscore"`, `"camelcase"`, `"uppercase
 ```scss
 $animation-speed: 2s;   // dash
 $animation_speed: 2s;   // underscore
-$ANIMATION_SPEED: 2s;   // camelcase
-$animationSpeed: 2s;    // uppercase
+$ANIMATION_SPEED: 2s;   // uppercase
+$animationSpeed: 2s;    // camelcase
 ```
 
 #### options.jsFormat

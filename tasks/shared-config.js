@@ -9,14 +9,7 @@
 
 "use strict";
 
-var camelCase = require( "mout/string/camelCase" );
-var hyphenate = require( "mout/string/hyphenate" );
-var underscore = require( "mout/string/underscore" );
-var deepClone = require( "mout/lang/deepClone" );
-var endsWith = require( "mout/string/endsWith" );
-var typecast = require( "mout/string/typecast" );
-var contains = require( "mout/array/contains" );
-var extend = require( "extend" );
+var mout = require( "mout" );
 
 module.exports = function( grunt ) {
 
@@ -26,37 +19,36 @@ module.exports = function( grunt ) {
 		// -- UTILS --
 		// ===========
 
-		var normalizeOutArray = function( value ) {
+		function normalizeOutArray( value ) {
 			return typeof value === "string" ? [ value ] : value;
-		};
+		}
 
-		var normalizeFormat = function( value ) {
-			return contains( varFormats, value ) ? value : varFormats[ 0 ];
-		};
+		function normalizeFormat( value ) {
+			return mout.array.contains( varFormats, value ) ? value : varFormats[ 0 ];
+		}
 
-		var format = function( value, type ) {
+		function format( value, type ) {
 			value = value.replace( /-/g, " " );
 
 			switch ( type ) {
 			case "underscore":
-				return underscore( value );
+				return mout.string.underscore( value );
 			case "uppercase":
 				return value.toUpperCase().replace( / /g, "_" );
 			case "dash":
-				return hyphenate( value );
+				return mout.string.hyphenate( value );
 			default:
-				return camelCase( value );
+				return mout.string.camelCase( value );
 			}
-		};
+		}
 
-		var fileExists = function( filePath ) {
+		function fileExists( filePath ) {
 			if ( !grunt.file.exists( filePath ) ) {
 				grunt.log.warn( "Source file (" + filePath + ") not found." );
 				return false;
 			}
 			return true;
-		};
-
+		}
 
 
 		// ==============
@@ -97,13 +89,12 @@ module.exports = function( grunt ) {
 		options.cssFormat = normalizeFormat( options.cssFormat );
 
 
-
 		// ================
 		// -- GENERATORS --
 		// ================
 
 		// Generate Style files
-		var generateStyle = function( data, type ) {
+		function generateStyle( data, type ) {
 			var content = "";
 			var pattern = outputPattern[ type ];
 			var name, key;
@@ -114,35 +105,35 @@ module.exports = function( grunt ) {
 			}
 
 			return content;
-		};
+		}
 
 
 		// Generate JavaScript files
-		var generateJS = function( data, type ) {
+		function generateJS( data, type ) {
 			var preparedData = prepareValues( data );
 			var content = JSON.stringify( preparedData, null, "\t" );
 
 			return outputPattern.js.replace( '{{name}}', options.name ).replace( '{{vars}}', content );
-		};
+		}
 
-		var generateAMD = function( data ) {
+		function generateAMD( data ) {
 			var preparedData = prepareValues( data );
 			var content = JSON.stringify( preparedData, null, "\t\t" );
-			var pattern = deepClone( outputPattern.amd );
+			var pattern = mout.lang.deepClone( outputPattern.amd );
 
 			content = content.substr( 1, content.length - 2 );
 
 			return pattern.replace( "{{vars}}", content );
-		};
+		}
 
-		var prepareValues = function( data ) {
+		function prepareValues( data ) {
 			var newData = {};
 			var key, value;
 
 			for ( key in data ) {
 				value = data[ key ];
 
-				if ( endsWith( value, "%" ) ) {
+				if ( mout.string.endsWith( value, "%" ) ) {
 					value = parseInt( value, 10 ) / 100;
 				} else {
 					value = parseInt( value, 10 );
@@ -152,7 +143,7 @@ module.exports = function( grunt ) {
 			}
 
 			return newData;
-		};
+		}
 
 
 		// ===================
@@ -168,9 +159,9 @@ module.exports = function( grunt ) {
 
 				// fetch JSON from file
 				var src = grunt.file.readJSON( filePath );
-				
+
 				// add configuration vars to main config
-				extend( true, srcConfig, src );
+				mout.object.deepMixIn( srcConfig, src );
 
 			} );
 
@@ -181,11 +172,11 @@ module.exports = function( grunt ) {
 				var output, generator;
 
 				// search for the correct generator by filetype
-				if ( contains( fileExtensions.css, fileType ) ) {
+				if ( mout.array.contains( fileExtensions.css, fileType ) ) {
 
 					generator = generateStyle;
 
-				} else if ( contains( fileExtensions.js, fileType ) ) {
+				} else if ( mout.array.contains( fileExtensions.js, fileType ) ) {
 
 					generator = options.amd ? generateAMD : generateJS;
 
@@ -203,7 +194,6 @@ module.exports = function( grunt ) {
 			} );
 
 		} );
-
 
 	} );
 
