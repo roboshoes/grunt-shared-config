@@ -215,6 +215,7 @@ grunt.initConfig( {
 
 
 ## Release History
+* 2014-04-25      v0.2.2      Fixes hex color definition in JS
 * 2013-05-11      v0.2.0      new configuration (with respect to the grunt conventions)
 * 2013-05-08      v0.1.0      Added Stylus and LESS support
 * 2013-05-08      v0.0.1      Initial Release
