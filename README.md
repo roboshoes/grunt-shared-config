@@ -106,7 +106,7 @@ grunt.initConfig( {
 			options: {
 				name: "globalConfig",
 				cssFormat: "dash",
-				jsFormat: "camelcase",
+				jsFormat: "uppercase",
 				amd: true
 			},
 			src: "config.json",
