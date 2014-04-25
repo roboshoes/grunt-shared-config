@@ -2,5 +2,6 @@
 	"height": "120px",
 	"width": "500px",
 	"amount": "33%",
-	"animation-speed": "100s"
+	"animation-speed": "100s",
+	"color": "#BEBEBE"
 }
