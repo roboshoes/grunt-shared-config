@@ -5,6 +5,7 @@ define( function() {
 		"WIDTH": 380,
 		"AMOUNT": 0.33,
 		"ANIMATION_SPEED": 100,
+		"COLOR": "#BEBEBE",
 		"OFFSET": 20
 	}
 
