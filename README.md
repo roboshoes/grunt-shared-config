@@ -91,7 +91,7 @@ For the following examples let's assume we supply this `config.json`.
 	"width": "500px",
 	"amount": "33%",
 	"animation-speed": "100s",
-  "color": "#BEBEBE"
+	"color": "#BEBEBE"
 }
 ```
 
@@ -132,7 +132,7 @@ define( function() {
 		"WIDTH": 500,
 		"AMOUNT": 0.33,
 		"ANIMATION_SPEED": 100,
-    "COLOR": "#BEBEBE"
+		"COLOR": "#BEBEBE"
 	}
 
 } );
@@ -173,7 +173,7 @@ var options = {
 	"width": 500,
 	"amount": 0.33,
 	"animation_speed": 100,
-  "color": "#BEBEBE"
+	"color": "#BEBEBE"
 };
 ```
 
