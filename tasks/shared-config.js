@@ -135,7 +135,7 @@ module.exports = function( grunt ) {
 
 				if ( mout.string.endsWith( value, "%" ) ) {
 					value = parseInt( value, 10 ) / 100;
-				} else {
+				} else if ( !mout.string.startsWith( value, "#" ) ) {
 					value = parseInt( value, 10 );
 				}
 

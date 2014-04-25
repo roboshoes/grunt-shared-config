@@ -90,7 +90,8 @@ For the following examples let's assume we supply this `config.json`.
 	"height": "120px",
 	"width": "500px",
 	"amount": "33%",
-	"animation-speed": "100s"
+	"animation-speed": "100s",
+	"color": "#BEBEBE"
 }
 ```
 
@@ -130,7 +131,8 @@ define( function() {
 		"HEIGHT": 120,
 		"WIDTH": 500,
 		"AMOUNT": 0.33,
-		"ANIMATION_SPEED": 100
+		"ANIMATION_SPEED": 100,
+		"COLOR": "#BEBEBE"
 	}
 
 } );
@@ -142,6 +144,7 @@ $height: 120px;
 $width: 500px;
 $amount: 33%;
 $animation-speed: 100s;
+$color: #BEBEBE";
 ```
 
 
@@ -169,7 +172,8 @@ var options = {
 	"height": 120,
 	"width": 500,
 	"amount": 0.33,
-	"animation_speed": 100
+	"animation_speed": 100,
+	"color": "#BEBEBE"
 };
 ```
 
@@ -219,3 +223,4 @@ grunt.initConfig( {
 ## Contributors
 * [@MathiasPaumgarten](https://github.com/MathiasPaumgarten) Mathias Paumgarten
 * [@cee](https://github.com/ceee) Tobias Klika
+* [@FredyC](https://github.com/FredyC) Daniel K.
