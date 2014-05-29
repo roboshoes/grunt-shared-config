@@ -97,12 +97,21 @@ module.exports = function( grunt ) {
 		function generateStyle( data, type ) {
 			var content = "";
 			var pattern = outputPattern[ type ];
-			var name, key;
 
-			for ( key in data ) {
-				name = format( key, options.cssFormat );
-				content += pattern.replace( '{{key}}', name ).replace( '{{value}}', data[ key ] );
+			function generateContent( data, parentKey ) {
+				var name, key;
+				for ( key in data ) {
+					name = parentKey ? format( parentKey + "-" + key, options.cssFormat ) : format( key, options.cssFormat );
+
+					if ( typeof( data[ key ] ) === "object" ) {
+						generateContent( data[ key ], name );
+					}else{
+						content += pattern.replace( '{{key}}', name ).replace( '{{value}}', data[ key ] );
+					}
+				}
 			}
+
+			generateContent( data );
 
 			return content;
 		}
