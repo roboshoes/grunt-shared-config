@@ -99,10 +99,18 @@ module.exports = function( grunt ) {
 			var pattern = outputPattern[ type ];
 			var name, key;
 
-			for ( key in data ) {
-				name = format( key, options.cssFormat );
-				content += pattern.replace( '{{key}}', name ).replace( '{{value}}', data[ key ] );
+			function generateContent( data, type, parent ) {
+				for (var key in data ) {
+					if ( typeof(data[key]) === "object" ) {
+						generateContent( data[key], type, key );
+					}else{
+						name = format( key, options.cssFormat );
+						content += pattern.replace( '{{key}}', parent ? parent + "-" + name : name ).replace( '{{value}}', data[ key ] );
+					}
+				}
 			}
+
+			generateContent( data, type );
 
 			return content;
 		}
