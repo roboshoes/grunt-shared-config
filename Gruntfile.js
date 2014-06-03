@@ -29,6 +29,35 @@ module.exports = function( grunt ) {
 			tests: [ "tmp" ]
 		},
 
+		watch: {
+			hint: {
+				files: [
+					"Gruntfile.js",
+					"tasks/*.js",
+					"<%= nodeunit.tests %>"
+				],
+
+				tasks: [ "jshint" ],
+
+				options: {
+					debounceDelay: 150
+				}
+			},
+
+			tests: {
+				files: [
+					"tasks/*.js",
+					"<%= nodeunit.tests %>"
+				],
+
+				tasks: [ "test" ],
+
+				options: {
+					debounceDelay: 150
+				}
+			}
+		},
+
 		shared_config: {
 			default: {
 				options: {
@@ -100,6 +129,7 @@ module.exports = function( grunt ) {
 	grunt.loadNpmTasks( "grunt-contrib-jshint" );
 	grunt.loadNpmTasks( "grunt-contrib-clean" );
 	grunt.loadNpmTasks( "grunt-contrib-nodeunit" );
+	grunt.loadNpmTasks( "grunt-contrib-watch" );
 
 	grunt.registerTask( "test", [ "clean", "jshint", "shared_config", "nodeunit" ] );
 	grunt.registerTask( "default", [ "test" ] );

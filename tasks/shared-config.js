@@ -31,14 +31,14 @@ module.exports = function( grunt ) {
 			value = value.replace( /-/g, " " );
 
 			switch ( type ) {
-			case "underscore":
-				return mout.string.underscore( value );
-			case "uppercase":
-				return value.toUpperCase().replace( / /g, "_" );
-			case "dash":
-				return mout.string.hyphenate( value );
-			default:
-				return mout.string.camelCase( value );
+				case "underscore":
+					return mout.string.underscore( value );
+				case "uppercase":
+					return value.toUpperCase().replace( / /g, "_" );
+				case "dash":
+					return mout.string.hyphenate( value );
+				default:
+					return mout.string.camelCase( value );
 			}
 		}
 
