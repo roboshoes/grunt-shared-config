@@ -65,7 +65,7 @@ This value is only relevant if `options.amd` is set to `false`. This String dete
 #### src
 Type: `String` or `Array`
 
-Contains a single config file (JSON) or an array of files.
+Contains a single config file (JSON) or an array of files. The config file may contains nested values.
 
 
 #### dest
@@ -91,7 +91,11 @@ For the following examples let's assume we supply this `config.json`.
 	"width": "500px",
 	"amount": "33%",
 	"animation-speed": "100s",
-	"color": "#BEBEBE"
+	"color": "#BEBEBE",
+	"car": {
+		"blue": "#0000FF",
+		"green": "#00FF00"
+	}
 }
 ```
 
@@ -132,7 +136,11 @@ define( function() {
 		"WIDTH": 500,
 		"AMOUNT": 0.33,
 		"ANIMATION_SPEED": 100,
-		"COLOR": "#BEBEBE"
+		"COLOR": "#BEBEBE",
+		"CAR": {
+			"BLUE": "#0000FF",
+			"GREEN": "#00FF00"
+		}
 	}
 
 } );
@@ -145,6 +153,8 @@ $width: 500px;
 $amount: 33%;
 $animation-speed: 100s;
 $color: #BEBEBE";
+$car-blue: #0000FF;
+$car-green: #00FF00;
 ```
 
 
@@ -215,6 +225,7 @@ grunt.initConfig( {
 
 
 ## Release History
+* 2014-06-03      v0.3.0      Adds nested variables
 * 2014-04-25      v0.2.2      Fixes hex color definition in JS
 * 2013-05-11      v0.2.0      new configuration (with respect to the grunt conventions)
 * 2013-05-08      v0.1.0      Added Stylus and LESS support
@@ -225,3 +236,4 @@ grunt.initConfig( {
 * [@MathiasPaumgarten](https://github.com/MathiasPaumgarten) Mathias Paumgarten
 * [@cee](https://github.com/ceee) Tobias Klika
 * [@FredyC](https://github.com/FredyC) Daniel K.
+* [@meodai](https://github.com/meodai) David A.

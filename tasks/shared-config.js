@@ -98,20 +98,20 @@ module.exports = function( grunt ) {
 			var content = "";
 			var pattern = outputPattern[ type ];
 
-			function generateContent( data, parentKey ) {
+			function resolveNested( data, parentKey ) {
 				var name, key;
 				for ( key in data ) {
 					name = parentKey ? format( parentKey + "-" + key, options.cssFormat ) : format( key, options.cssFormat );
 
 					if ( typeof( data[ key ] ) === "object" ) {
-						generateContent( data[ key ], name );
-					}else{
-						content += pattern.replace( '{{key}}', name ).replace( '{{value}}', data[ key ] );
+						resolveNested( data[ key ], name );
+					} else {
+						content += pattern.replace( "{{key}}", name ).replace( "{{value}}", data[ key ] );
 					}
 				}
 			}
 
-			generateContent( data );
+			resolveNested( data );
 
 			return content;
 		}
@@ -122,36 +122,63 @@ module.exports = function( grunt ) {
 			var preparedData = prepareValues( data );
 			var content = JSON.stringify( preparedData, null, "\t" );
 
-			return outputPattern.js.replace( '{{name}}', options.name ).replace( '{{vars}}', content );
+			return outputPattern.js.replace( "{{name}}", options.name ).replace( "{{vars}}", content );
 		}
 
 		function generateAMD( data ) {
 			var preparedData = prepareValues( data );
-			var content = JSON.stringify( preparedData, null, "\t\t" );
+			var content = JSON.stringify( preparedData, null, "\t" );
 			var pattern = mout.lang.deepClone( outputPattern.amd );
 
 			content = content.substr( 1, content.length - 2 );
+			content = indent( content, "\t" );
 
 			return pattern.replace( "{{vars}}", content );
 		}
 
 		function prepareValues( data ) {
 			var newData = {};
-			var key, value;
 
-			for ( key in data ) {
-				value = data[ key ];
+			function updateValues( object, newData ) {
+				for ( var key in object ) {
+					var value = object[ key ];
 
-				if ( mout.string.endsWith( value, "%" ) ) {
-					value = parseInt( value, 10 ) / 100;
-				} else if ( !mout.string.startsWith( value, "#" ) ) {
-					value = parseInt( value, 10 );
+					if ( mout.lang.isObject( value ) ) {
+
+						var newKey = format( key, options.jsFormat );
+
+						newData[ newKey ] = {};
+						updateValues( value, newData[ newKey ] );
+
+						continue;
+
+					} else if ( mout.string.endsWith( value, "%" ) ) {
+
+						value = parseInt( value, 10 ) / 100;
+
+					} else if ( ! mout.string.startsWith( value, "#" ) ) {
+
+						value = parseInt( value, 10 );
+
+					}
+
+					newData[ format( key, options.jsFormat ) ] = value;
 				}
-
-				newData[ format( key, options.jsFormat ) ] = value;
 			}
 
+			updateValues( data, newData );
+
 			return newData;
+		}
+
+		function indent( content, indention ) {
+			content = content.replace( /\n/g, "\n" + indention );
+
+			while ( mout.string.endsWith( content, "\t" ) ) {
+				content = content.substr( 0, content.length - 1 );
+			}
+
+			return content;
 		}
 
 
