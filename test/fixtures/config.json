@@ -3,5 +3,13 @@
 	"width": "500px",
 	"amount": "33%",
 	"animation-speed": "100s",
-	"color": "#BEBEBE"
+	"color": "#BEBEBE",
+	"car": {
+		"red": "#FF0000",
+		"green": "#00FF00",
+		"blue": "#0000FF",
+		"inner": {
+			"seat": "10px"
+		}
+	}
 }
