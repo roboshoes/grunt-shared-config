@@ -50,6 +50,14 @@ module.exports = function( grunt ) {
 			return true;
 		}
 
+		function isStringNumber( value ) {
+			var units = [ "em", "px", "s", "in", "mm", "cm", "pt", "pc", "%" ];
+
+			return units.reduce( function( previous, current ) {
+				return previous || mout.string.endsWith( value, current );
+			}, false );
+		}
+
 
 		// ==============
 		// -- SETTINGS --
@@ -103,10 +111,19 @@ module.exports = function( grunt ) {
 				for ( key in data ) {
 					name = parentKey ? format( parentKey + "-" + key, options.cssFormat ) : format( key, options.cssFormat );
 
-					if ( typeof( data[ key ] ) === "object" ) {
+					if ( mout.lang.isObject( data[ key ] ) ) {
+
 						resolveNested( data[ key ], name );
+
 					} else {
-						content += pattern.replace( "{{key}}", name ).replace( "{{value}}", data[ key ] );
+
+						var value = data[ key ];
+
+						if ( ! isStringNumber( value ) && value[ 0 ] !== "#" ) {
+							value = "\"" + value + "\"";
+						}
+
+						content += pattern.replace( "{{key}}", name ).replace( "{{value}}", value );
 					}
 				}
 			}
@@ -156,7 +173,7 @@ module.exports = function( grunt ) {
 
 						value = parseInt( value, 10 ) / 100;
 
-					} else if ( ! mout.string.startsWith( value, "#" ) ) {
+					} else if ( isStringNumber( value ) ) {
 
 						value = parseInt( value, 10 );
 

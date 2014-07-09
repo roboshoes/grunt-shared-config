@@ -14,6 +14,7 @@ define( function() {
 				"SEAT": 10
 			}
 		},
+		"STRING": "a/path/to/something.png",
 		"OFFSET": 20
 	}
 

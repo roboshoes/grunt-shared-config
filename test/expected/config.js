@@ -12,5 +12,6 @@ var globalConfig = {
 			"seat": 10
 		}
 	},
+	"string": "a/path/to/something.png",
 	"offset": 20
 };
