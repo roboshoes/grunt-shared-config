@@ -114,6 +114,31 @@ module.exports = function( grunt ) {
 						]
 					}
 				]
+			},
+
+			sassMaps: {
+				options: {
+					useSassMaps: true,
+					name: "globalConfig"
+				},
+				files: [
+					{
+						src: [
+							"test/fixtures/config.json"
+						],
+						dest: [
+							"tmp/configMaps.scss"
+						]
+					},
+					{
+						src: [
+							"test/fixtures/config1.json"
+						],
+						dest: [
+							"tmp/configMaps1.scss"
+						]
+					}
+				]
 			}
 		},
 

@@ -60,6 +60,21 @@ exports.shared_config = {
 		test.equal( actual, expected, "JS AMD should be equal." );
 
 		test.done();
-	}
+	},
+
+	sass_maps_options: function( test ) {
+		test.expect( 2 );
+
+		var files = {
+			// scss maps
+			sassMaps:  [ grunt.file.read( "tmp/configMaps.scss"),  grunt.file.read( "test/expected/configMaps.scss") ],
+			sassMaps1: [ grunt.file.read( "tmp/configMaps1.scss"), grunt.file.read( "test/expected/configMaps1.scss") ]
+		};
+
+		test.equal( files.sassMaps[0], files.sassMaps[1], "SASS Maps  (configMaps.scss) should be equal." );
+		test.equal( files.sassMaps1[0], files.sassMaps1[1], "SASS Maps  (configMaps1.scss) should be equal." );
+
+		test.done();
+	},
 
 };

@@ -58,6 +58,24 @@ module.exports = function( grunt ) {
 			}, false );
 		}
 
+		// String replacement utilities
+		//
+		String.prototype.replaceKey = function (key) {
+			return this.replace("{{key}}", key);
+		};
+
+		String.prototype.replaceValue = function (value) {
+			return this.replace("{{value}}", value);
+		};
+
+		String.prototype.replaceName = function (name) {
+			return this.replace("{{name}}", name);
+		};
+
+		String.prototype.replaceNext = function (next) {
+			return this.replace("{{next}}", next);
+		};
+
 
 		// ==============
 		// -- SETTINGS --
@@ -68,7 +86,8 @@ module.exports = function( grunt ) {
 			amd: false,
 			jsFormat: "uppercase",
 			cssFormat: "dash",
-			name: "config"
+			name: "config",
+			useSassMaps: false,
 		} );
 
 		// possible variable formats
@@ -83,12 +102,13 @@ module.exports = function( grunt ) {
 
 		// variable patterns
 		var outputPattern = {
-			scss: "${{key}}: {{value}};\n",
-			sass: "${{key}}: {{value}}\n",
-			less: "@{{key}}: {{value}};\n",
-			styl: "{{key}} = {{value}}\n",
-			amd:  "define( function() {\n\n\treturn {{{vars}}\t}\n\n} );\n",
-			js:   "var {{name}} = {{vars}};\n"
+			scss:			"${{key}}: {{value}};\n",
+			sass:			"${{key}}: {{value}}\n",
+			sassmaps:	"{{key}}: {{value}},{{next}}",
+			less:			"@{{key}}: {{value}};\n",
+			styl:			"{{key}} = {{value}}\n",
+			amd:			"define( function() {\n\n\treturn {{{vars}}\t}\n\n} );\n",
+			js:				"var {{name}} = {{vars}};\n"
 		};
 
 		// Normalize user input
@@ -151,6 +171,40 @@ module.exports = function( grunt ) {
 			content = indent( content, "\t" );
 
 			return pattern.replace( "{{vars}}", content );
+		}
+
+		function generateSassMaps( data, type ) {
+			var pattern = outputPattern['sassmaps'];
+
+			function generateSassMapsRecursive(data, name) {
+				var key,
+						currentItem = "",
+						first = true,
+						sassMapStr;
+
+				for (key in data) {
+					if ( mout.lang.isObject( data[ key ] ) ) {
+						currentItem = generateSassMapsRecursive(data[key], key);
+					} else {
+						currentItem = pattern.replaceKey(key).replaceValue(data[key]);
+					}
+					if (first) {
+						sassMapStr = currentItem;
+						first = false;
+					} else {
+						sassMapStr = sassMapStr.replaceNext(currentItem);
+					}
+				}
+
+				// when name is passed, it means that we've been called by a wrapper object
+				if (name) {
+					return name + ": (" + sassMapStr.replaceNext("").replace(',)', ')') + ")";
+				} else {
+					return "(" + sassMapStr.replaceNext("").replace(',)', ')') + ")";
+				}
+			}
+			return "$" + options.name + ": " + generateSassMapsRecursive(data).replaceNext("").replace(",)", ")") + ";";
+
 		}
 
 		function prepareValues( data ) {
@@ -224,8 +278,13 @@ module.exports = function( grunt ) {
 				var fileType = filePath.split( "." ).pop().toLowerCase();
 				var output, generator;
 
+
 				// search for the correct generator by filetype
-				if ( mout.array.contains( fileExtensions.css, fileType ) ) {
+				if ( fileType === 'scss' && options.useSassMaps) {
+
+					generator = generateSassMaps;
+
+				} else if ( mout.array.contains( fileExtensions.css, fileType ) ) {
 
 					generator = generateStyle;
 
@@ -234,7 +293,6 @@ module.exports = function( grunt ) {
 					generator = options.amd ? generateAMD : generateJS;
 
 				} else {
-
 					grunt.log.warn( "Unknown filetype (" + fileType + ")." );
 					return false;
 				}
