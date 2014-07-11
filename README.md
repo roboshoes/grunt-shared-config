@@ -59,6 +59,13 @@ Default value: `options`
 
 This value is only relevant if `options.amd` is set to `false`. This String determines the name of the config object (for JavaScript).
 
+
+#### options.useSassMaps
+Type: `Boolean`
+Default values: `false`
+
+If this is set to `true` for every __SCSS__ file it will generate a Sass Map file instead.
+
 ### Options (Files)
 
 
@@ -184,6 +191,10 @@ var options = {
 	"amount": 0.33,
 	"animation_speed": 100,
 	"color": "#BEBEBE"
+	"car": {
+		"blue": "#0000FF",
+		"green": "#00FF00"
+	}
 };
 ```
 
@@ -194,7 +205,7 @@ The following task allows processing of processing of multiple config files with
 ```js
 grunt.initConfig( {
 	shared_config: {
-        filesTest: {
+		filesTest: {
 			options: {
 				name: "globalConfig",
 				cssFormat: "camelcase",
@@ -224,7 +235,33 @@ grunt.initConfig( {
 ```
 
 
+#### Generate Sass Maps
+
+```js
+grunt.initConfig( {
+	shared_config: {
+		default: {
+			options: {
+				name: "globalConfig",
+				useSassMaps: true
+			},
+			src: "config.json",
+			dest: [
+				"styles/config.scss"
+			]
+		},
+	}
+} )
+```
+
+_scripts/config.scss_
+```scss
+$globalConfig: (height: 120px,width: 500px,amount: 33%,animation-speed: 100s,color: #BEBEBE,car: (green: #00FF00,blue: #0000FF));
+```
+
+
 ## Release History
+* 2014-06-11      v0.3.2      Adds sass maps option
 * 2014-06-03      v0.3.0      Adds nested variables
 * 2014-04-25      v0.2.2      Fixes hex color definition in JS
 * 2013-05-11      v0.2.0      new configuration (with respect to the grunt conventions)
@@ -237,3 +274,4 @@ grunt.initConfig( {
 * [@cee](https://github.com/ceee) Tobias Klika
 * [@FredyC](https://github.com/FredyC) Daniel K.
 * [@meodai](https://github.com/meodai) David A.
+* [@lucalanca](https://github.com/lucalanca) João Figueiredo

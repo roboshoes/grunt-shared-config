@@ -58,24 +58,6 @@ module.exports = function( grunt ) {
 			}, false );
 		}
 
-		// String replacement utilities
-		//
-		String.prototype.replaceKey = function (key) {
-			return this.replace("{{key}}", key);
-		};
-
-		String.prototype.replaceValue = function (value) {
-			return this.replace("{{value}}", value);
-		};
-
-		String.prototype.replaceName = function (name) {
-			return this.replace("{{name}}", name);
-		};
-
-		String.prototype.replaceNext = function (next) {
-			return this.replace("{{next}}", next);
-		};
-
 
 		// ==============
 		// -- SETTINGS --
@@ -102,13 +84,13 @@ module.exports = function( grunt ) {
 
 		// variable patterns
 		var outputPattern = {
-			scss:			"${{key}}: {{value}};\n",
-			sass:			"${{key}}: {{value}}\n",
-			sassmaps:	"{{key}}: {{value}},{{next}}",
-			less:			"@{{key}}: {{value}};\n",
-			styl:			"{{key}} = {{value}}\n",
-			amd:			"define( function() {\n\n\treturn {{{vars}}\t}\n\n} );\n",
-			js:				"var {{name}} = {{vars}};\n"
+			scss:     "${{key}}: {{value}};\n",
+			sass:     "${{key}}: {{value}}\n",
+			less:     "@{{key}}: {{value}};\n",
+			sassmaps: "{{key}}: {{value}},{{next}}",
+			styl:     "{{key}} = {{value}}\n",
+			amd:      "define( function() {\n\n\treturn {{{vars}}\t}\n\n} );\n",
+			js:       "var {{name}} = {{vars}};\n"
 		};
 
 		// Normalize user input
@@ -173,37 +155,39 @@ module.exports = function( grunt ) {
 			return pattern.replace( "{{vars}}", content );
 		}
 
-		function generateSassMaps( data, type ) {
-			var pattern = outputPattern['sassmaps'];
+		function generateSassMaps( data ) {
+			var pattern = outputPattern["sassmaps"];
 
-			function generateSassMapsRecursive(data, name) {
-				var key,
-						currentItem = "",
-						first = true,
-						sassMapStr;
+			function generateSassMapsRecursive( data, name ) {
+				var key;
+				var currentItem = "";
+				var first = true;
+				var sassMapStr;
 
-				for (key in data) {
+				for ( key in data ) {
+
 					if ( mout.lang.isObject( data[ key ] ) ) {
-						currentItem = generateSassMapsRecursive(data[key], key);
+						currentItem = generateSassMapsRecursive( data[ key ], key );
 					} else {
-						currentItem = pattern.replaceKey(key).replaceValue(data[key]);
+						currentItem = pattern.replace( "{{key}}", key ).replace( "{{value}}", data[ key ] );
 					}
-					if (first) {
+
+					if ( first ) {
 						sassMapStr = currentItem;
 						first = false;
 					} else {
-						sassMapStr = sassMapStr.replaceNext(currentItem);
+						sassMapStr = sassMapStr.replace( "{{next}}", currentItem );
 					}
 				}
 
-				// when name is passed, it means that we've been called by a wrapper object
-				if (name) {
-					return name + ": (" + sassMapStr.replaceNext("").replace(',)', ')') + ")";
+				// when name is passed, it means that we"ve been called by a wrapper object
+				if ( name ) {
+					return name + ": (" + sassMapStr.replace( "{{next}}", "" ).replace(",)", ")") + ")";
 				} else {
-					return "(" + sassMapStr.replaceNext("").replace(',)', ')') + ")";
+					return "(" + sassMapStr.replace( "{{next}}", "" ).replace(",)", ")") + ")";
 				}
 			}
-			return "$" + options.name + ": " + generateSassMapsRecursive(data).replaceNext("").replace(",)", ")") + ";";
+			return "$" + options.name + ": " + generateSassMapsRecursive( data ).replace( "{{next}}", "" ).replace( /,\)/g , ")" ) + ";";
 
 		}
 
@@ -280,7 +264,7 @@ module.exports = function( grunt ) {
 
 
 				// search for the correct generator by filetype
-				if ( fileType === 'scss' && options.useSassMaps) {
+				if ( fileType === "scss" && options.useSassMaps) {
 
 					generator = generateSassMaps;
 

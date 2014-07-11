@@ -66,9 +66,8 @@ exports.shared_config = {
 		test.expect( 2 );
 
 		var files = {
-			// scss maps
-			sassMaps:  [ grunt.file.read( "tmp/configMaps.scss"),  grunt.file.read( "test/expected/configMaps.scss") ],
-			sassMaps1: [ grunt.file.read( "tmp/configMaps1.scss"), grunt.file.read( "test/expected/configMaps1.scss") ]
+			sassMaps:  [ grunt.file.read( "tmp/configMaps.scss"),  grunt.file.read( "test/expected/configMaps.scss" ) ],
+			sassMaps1: [ grunt.file.read( "tmp/configMaps1.scss"), grunt.file.read( "test/expected/configMaps1.scss" ) ]
 		};
 
 		test.equal( files.sassMaps[0], files.sassMaps[1], "SASS Maps  (configMaps.scss) should be equal." );
