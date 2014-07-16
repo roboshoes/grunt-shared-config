@@ -9,29 +9,46 @@ exports.shared_config = {
 	},
 
 	style_options: function( test ) {
-		test.expect( 6 );
+		test.expect( 12 );
 
 		var files = {
 			// scss
-			scss:   [ grunt.file.read( "tmp/config.scss" ), grunt.file.read( "test/expected/config.scss" ) ],
+			scss:       [ grunt.file.read( "tmp/config.scss" ), grunt.file.read( "test/expected/config.scss" ) ],
+			scss_yml:   [ grunt.file.read( "tmp/config_yml.scss" ), grunt.file.read( "test/expected/config.scss" ) ],
 			// sass flavoured
-			sass:   [ grunt.file.read( "tmp/config.sass" ), grunt.file.read( "test/expected/config.sass" ) ],
+			sass:       [ grunt.file.read( "tmp/config.sass" ), grunt.file.read( "test/expected/config.sass" ) ],
+			sass_yml:   [ grunt.file.read( "tmp/config_yml.sass" ), grunt.file.read( "test/expected/config.sass" ) ],
 			// less
-			less:   [ grunt.file.read( "tmp/config.less" ), grunt.file.read( "test/expected/config.less" ) ],
+			less:       [ grunt.file.read( "tmp/config.less" ), grunt.file.read( "test/expected/config.less" ) ],
+			less_yml:   [ grunt.file.read( "tmp/config_yml.less" ), grunt.file.read( "test/expected/config.less" ) ],
 			// stylus
-			stylus: [ grunt.file.read( "tmp/config.styl" ), grunt.file.read( "test/expected/config.styl" ) ],
+			stylus:     [ grunt.file.read( "tmp/config.styl" ), grunt.file.read( "test/expected/config.styl" ) ],
+			stylus_yml: [ grunt.file.read( "tmp/config_yml.styl" ), grunt.file.read( "test/expected/config.styl" ) ],
 			// scss (files object based)
-			scss1:  [ grunt.file.read( "tmp/config1.scss" ), grunt.file.read( "test/expected/config1.scss" ) ],
+			scss1:      [ grunt.file.read( "tmp/config1.scss" ), grunt.file.read( "test/expected/config1.scss" ) ],
+			scss1_yml:  [ grunt.file.read( "tmp/config1_yml.scss" ), grunt.file.read( "test/expected/config1.scss" ) ],
 			// less (files object based)
-			less1:  [ grunt.file.read( "tmp/config1.less" ), grunt.file.read( "test/expected/config1.less" ) ]
+			less1:      [ grunt.file.read( "tmp/config1.less" ), grunt.file.read( "test/expected/config1.less" ) ],
+			less1_yml:  [ grunt.file.read( "tmp/config1_yml.less" ), grunt.file.read( "test/expected/config1.less" ) ]
 		};
 
 		test.equal( files.scss[0], files.scss[1], "SCSS should be equal." );
+		test.equal( files.scss_yml[0], files.scss[1], "SCSS (yml source) should be equal." );
+
 		test.equal( files.sass[0], files.sass[1], "SASS should be equal." );
+		test.equal( files.sass_yml[0], files.sass[1], "SASS (yml source) should be equal." );
+
 		test.equal( files.less[0], files.less[1], "LESS should be equal." );
+		test.equal( files.less_yml[0], files.less[1], "LESS (yml source) should be equal." );
+
 		test.equal( files.stylus[0], files.stylus[1], "Stylus should be equal." );
+		test.equal( files.stylus_yml[0], files.stylus[1], "Stylus (yml source) should be equal." );
+
 		test.equal( files.scss1[0], files.scss1[1], "SCSS (config1.scss) should be equal." );
+		test.equal( files.scss1_yml[0], files.scss1[1], "SCSS (config1.scss) (yml source) should be equal." );
+
 		test.equal( files.less1[0], files.less1[1], "LESS (config1.less) should be equal." );
+		test.equal( files.less1_yml[0], files.less1[1], "LESS (config1.less) (yml source) should be equal." );
 
 		test.done();
 	},

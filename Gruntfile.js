@@ -77,6 +77,24 @@ module.exports = function( grunt ) {
 					"tmp/config.js"
 				]
 			},
+			style_yml: {
+				options: {
+					name: "globalConfig",
+					cssFormat: "dash",
+					jsFormat: "underscore"
+				},
+				src: [
+					"test/fixtures/config.yml",
+					"test/fixtures/config1.yml"
+				],
+				dest: [
+					"tmp/config_yml.scss",
+					"tmp/config_yml.sass",
+					"tmp/config_yml.less",
+					"tmp/config_yml.styl",
+					"tmp/config_yml.js"
+				]
+			},
 
 			amdTest: {
 				options: {
@@ -89,6 +107,18 @@ module.exports = function( grunt ) {
 					"test/fixtures/config1.json"
 				],
 				dest: "tmp/config-amd.js"
+			},
+			amdTest_yml: {
+				options: {
+					name: "globalConfig",
+					jsFormat: "uppercase",
+					amd: true
+				},
+				src: [
+					"test/fixtures/config.yml",
+					"test/fixtures/config1.yml"
+				],
+				dest: "tmp/config-amd_yml.js"
 			},
 
 			filesTest: {
@@ -115,6 +145,30 @@ module.exports = function( grunt ) {
 					}
 				]
 			},
+			filesTest_yml: {
+				options: {
+					name: "globalConfig",
+					cssFormat: "camelcase",
+					jsFormat: "camelcase"
+				},
+				files: [
+					{
+						src: "test/fixtures/config1.json",
+						dest: [
+							"tmp/config1_yml.scss",
+							"tmp/config1_yml.less"
+						]
+					},{
+						src: [
+							"test/fixtures/config.yml",
+							"test/fixtures/config1.yml"
+						],
+						dest: [
+							"tmp/config1_yml.js"
+						]
+					}
+				]
+			},
 
 			sassMaps: {
 				options: {
@@ -136,6 +190,30 @@ module.exports = function( grunt ) {
 						],
 						dest: [
 							"tmp/configMaps1.scss"
+						]
+					}
+				]
+			},
+			sassMaps_yml: {
+				options: {
+					useSassMaps: true,
+					name: "globalConfig"
+				},
+				files: [
+					{
+						src: [
+							"test/fixtures/config.yml"
+						],
+						dest: [
+							"tmp/configMaps_yml.scss"
+						]
+					},
+					{
+						src: [
+							"test/fixtures/config1.yml"
+						],
+						dest: [
+							"tmp/configMaps1_yml.scss"
 						]
 					}
 				]

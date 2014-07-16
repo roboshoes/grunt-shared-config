@@ -1,7 +1,7 @@
 /*
  * grunt-shared-config
  *
- * Use this task to create multiple config files for JS/JS-AMD, SCSS/SASS/LESS/stylus from one JSON.
+ * Use this task to create multiple config files for JS/JS-AMD, SCSS/SASS/LESS/stylus from one JSON/YAML.
  *
  * Copyright (c) 2013 Mathias Paumgarten
  * Licensed under the MIT license.
@@ -248,8 +248,14 @@ module.exports = function( grunt ) {
 
 			file.src.filter( fileExists ).map( function( filePath ) {
 
-				// fetch JSON from file
-				var src = grunt.file.readJSON( filePath );
+				// fetch JSON or YAML from file
+				var fileType = filePath.split( "." ).pop().toLowerCase();
+				var src;
+				if ( fileType === 'yml' || fileType === 'yaml' ) {
+					src = grunt.file.readYAML( filePath );
+				} else {
+					src = grunt.file.readJSON( filePath );
+				}
 
 				// add configuration vars to main config
 				mout.object.deepMixIn( srcConfig, src );
