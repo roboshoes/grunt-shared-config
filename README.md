@@ -62,9 +62,17 @@ This value is only relevant if `options.amd` is set to `false`. This String dete
 
 #### options.useSassMaps
 Type: `Boolean`
-Default values: `false`
+Default value: `false`
 
 If this is set to `true` for every __SCSS__ file it will generate a Sass Map file instead.
+
+
+#### options.indention
+Type: `String`
+Default value: `\t`
+
+This is used for indention. Defaults to tab, pass spaces if you prefer that.
+
 
 ### Options (Files)
 

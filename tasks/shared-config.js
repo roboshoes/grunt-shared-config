@@ -70,6 +70,7 @@ module.exports = function( grunt ) {
 			cssFormat: "dash",
 			name: "config",
 			useSassMaps: false,
+			indention: "\t",
 		} );
 
 		// possible variable formats
@@ -89,7 +90,7 @@ module.exports = function( grunt ) {
 			less:     "@{{key}}: {{value}};\n",
 			sassmaps: "{{key}}: {{value}},{{next}}",
 			styl:     "{{key}} = {{value}}\n",
-			amd:      "define( function() {\n\n\treturn {{{vars}}\t}\n\n} );\n",
+			amd:      "define( function() {\n\n"+options.indention+"return {{{vars}}"+options.indention+"}\n\n} );\n",
 			js:       "var {{name}} = {{vars}};\n"
 		};
 
@@ -139,18 +140,18 @@ module.exports = function( grunt ) {
 		// Generate JavaScript files
 		function generateJS( data, type ) {
 			var preparedData = prepareValues( data );
-			var content = JSON.stringify( preparedData, null, "\t" );
+			var content = JSON.stringify( preparedData, null, options.indention );
 
 			return outputPattern.js.replace( "{{name}}", options.name ).replace( "{{vars}}", content );
 		}
 
 		function generateAMD( data ) {
 			var preparedData = prepareValues( data );
-			var content = JSON.stringify( preparedData, null, "\t" );
+			var content = JSON.stringify( preparedData, null, options.indention );
 			var pattern = mout.lang.deepClone( outputPattern.amd );
 
 			content = content.substr( 1, content.length - 2 );
-			content = indent( content, "\t" );
+			content = indent( content, options.indention );
 
 			return pattern.replace( "{{vars}}", content );
 		}
@@ -173,18 +174,18 @@ module.exports = function( grunt ) {
 					}
 
 					if ( first ) {
-						sassMapStr = currentItem;
+						sassMapStr = indent("\n" + currentItem, options.indention);
 						first = false;
 					} else {
-						sassMapStr = sassMapStr.replace( "{{next}}", currentItem );
+						sassMapStr = sassMapStr.replace( "{{next}}", indent("\n" + currentItem, options.indention) );
 					}
 				}
 
 				// when name is passed, it means that we"ve been called by a wrapper object
 				if ( name ) {
-					return name + ": (" + sassMapStr.replace( "{{next}}", "" ).replace(",)", ")") + ")";
+					return name + ": (" + sassMapStr.replace( "{{next}}", "" ).replace(",)", ")") + "\n)";
 				} else {
-					return "(" + sassMapStr.replace( "{{next}}", "" ).replace(",)", ")") + ")";
+					return "(" + sassMapStr.replace( "{{next}}", "" ).replace(",)", ")") + "\n)";
 				}
 			}
 			return "$" + options.name + ": " + generateSassMapsRecursive( data ).replace( "{{next}}", "" ).replace( /,\)/g , ")" ) + ";";
@@ -229,7 +230,7 @@ module.exports = function( grunt ) {
 		function indent( content, indention ) {
 			content = content.replace( /\n/g, "\n" + indention );
 
-			while ( mout.string.endsWith( content, "\t" ) ) {
+			while ( mout.string.endsWith( content, options.indention ) ) {
 				content = content.substr( 0, content.length - 1 );
 			}
 
