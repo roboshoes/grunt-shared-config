@@ -264,7 +264,18 @@ grunt.initConfig( {
 
 _scripts/config.scss_
 ```scss
-$globalConfig: (height: 120px,width: 500px,amount: 33%,animation-speed: 100s,color: #BEBEBE,car: (green: #00FF00,blue: #0000FF));
+$globalConfig: (
+	height: 120px,
+	width: 500px,
+	amount: 33%,
+	animation-speed: 100s,
+	color: #BEBEBE,
+	car: (
+		red: #FF0000,
+		green: #00FF00,
+		blue: #0000FF
+	)
+);
 ```
 
 
