@@ -275,3 +275,4 @@ $globalConfig: (height: 120px,width: 500px,amount: 33%,animation-speed: 100s,col
 * [@FredyC](https://github.com/FredyC) Daniel K.
 * [@meodai](https://github.com/meodai) David A.
 * [@lucalanca](https://github.com/lucalanca) João Figueiredo
+* [@benib](https://github.com/benib) Beni B.
