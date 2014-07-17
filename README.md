@@ -62,9 +62,17 @@ This value is only relevant if `options.amd` is set to `false`. This String dete
 
 #### options.useSassMaps
 Type: `Boolean`
-Default values: `false`
+Default value: `false`
 
 If this is set to `true` for every __SCSS__ file it will generate a Sass Map file instead.
+
+
+#### options.indention
+Type: `String`
+Default value: `\t`
+
+This is used for indention. Defaults to tab, pass spaces if you prefer that.
+
 
 ### Options (Files)
 
@@ -256,7 +264,18 @@ grunt.initConfig( {
 
 _scripts/config.scss_
 ```scss
-$globalConfig: (height: 120px,width: 500px,amount: 33%,animation-speed: 100s,color: #BEBEBE,car: (green: #00FF00,blue: #0000FF));
+$globalConfig: (
+	height: 120px,
+	width: 500px,
+	amount: 33%,
+	animation-speed: 100s,
+	color: #BEBEBE,
+	car: (
+		red: #FF0000,
+		green: #00FF00,
+		blue: #0000FF
+	)
+);
 ```
 
 
