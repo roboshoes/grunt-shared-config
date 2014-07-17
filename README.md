@@ -80,7 +80,7 @@ This is used for indention. Defaults to tab, pass spaces if you prefer that.
 #### src
 Type: `String` or `Array`
 
-Contains a single config file (JSON) or an array of files. The config file may contains nested values.
+Contains a single config file (JSON or YAML) or an array of files. The config file may contains nested values. Files ending with .yml or .yaml are parsed as YAML, all others as JSON.
 
 
 #### dest
@@ -97,7 +97,7 @@ This array can be used as a substitution for `src` and `dest` to allow multi-pro
 
 ### Usage Examples
 
-__grunt-shared-config__ requires a JSON file to generate the config files from. The JSON file must supply all variable in _hyphon format_.
+__grunt-shared-config__ requires a JSON or YAML file to generate the config files from. The JSON file must supply all variable in _hyphon format_.
 For the following examples let's assume we supply this `config.json`.
 
 ```json
@@ -294,3 +294,4 @@ $globalConfig: (
 * [@FredyC](https://github.com/FredyC) Daniel K.
 * [@meodai](https://github.com/meodai) David A.
 * [@lucalanca](https://github.com/lucalanca) João Figueiredo
+* [@benib](https://github.com/benib) Beni B.
