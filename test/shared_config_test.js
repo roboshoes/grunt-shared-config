@@ -93,4 +93,18 @@ exports.shared_config = {
 		test.done();
 	},
 
+	mask_options: function( test ) {
+		test.expect( 2 );
+
+		var files = {
+			mask:      [ grunt.file.read( "tmp/config_mask.scss"),  grunt.file.read( "test/expected/config_mask.scss" ) ],
+			maskAllow: [ grunt.file.read( "tmp/config_mask_allow.scss"),  grunt.file.read( "test/expected/config_mask_allow.scss" ) ]
+		};
+
+		test.equal( files.mask[0], files.mask[1], "Masked (config_mask.scss) should be equal." );
+		test.equal( files.maskAllow[0], files.maskAllow[1], "Masked allow (config_mask_allow.scss) should be equal." );
+
+		test.done();
+	},
+
 };

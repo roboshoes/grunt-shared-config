@@ -217,7 +217,43 @@ module.exports = function( grunt ) {
 						]
 					}
 				]
-			}
+			},
+
+			mask: {
+				options: {
+					name: "globalConfig",
+					useSassMaps: true,
+					maskFile: "test/fixtures/mask.json"
+				},
+				files: [
+					{
+						src: [
+							"test/fixtures/config.yml"
+						],
+						dest: [
+							"tmp/config_mask.scss"
+						]
+					}
+				]
+			},
+			mask_allowMode: {
+				options: {
+					name: "globalConfig",
+					useSassMaps: true,
+					maskFile: "test/fixtures/mask.json",
+					maskAllowMode: true
+				},
+				files: [
+					{
+						src: [
+							"test/fixtures/config.yml"
+						],
+						dest: [
+							"tmp/config_mask_allow.scss"
+						]
+					}
+				]
+			},
 		},
 
 		nodeunit: {
