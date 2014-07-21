@@ -288,7 +288,7 @@ module.exports = function( grunt ) {
 				// if mask object is given, merge it with the mask from file if any
 				if ( typeof options.mask !== "undefined" && mout.lang.isObject( options.mask )) {
 					if ( mask !== null ) {
-						mout.object.deepMixIn( mask, options.mask );
+						mask = mout.object.deepMixIn( mask, options.mask );
 					} else {
 						mask = options.mask;
 					}

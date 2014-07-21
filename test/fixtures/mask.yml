@@ -1,0 +1,7 @@
+height: true
+animation-speed: true
+car:
+  green: true
+  inner:
+    seat: true
+string: true

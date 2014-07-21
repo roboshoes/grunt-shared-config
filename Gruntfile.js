@@ -254,6 +254,41 @@ module.exports = function( grunt ) {
 					}
 				]
 			},
+			mask_yml: {
+				options: {
+					name: "globalConfig",
+					useSassMaps: true,
+					maskFile: "test/fixtures/mask.yml"
+				},
+				files: [
+					{
+						src: [
+							"test/fixtures/config.json"
+						],
+						dest: [
+							"tmp/config_mask_yml.scss"
+						]
+					}
+				]
+			},
+			mask_allowMode_yml: {
+				options: {
+					name: "globalConfig",
+					useSassMaps: true,
+					maskFile: "test/fixtures/mask.yml",
+					maskAllowMode: true
+				},
+				files: [
+					{
+						src: [
+							"test/fixtures/config.json"
+						],
+						dest: [
+							"tmp/config_mask_allow_yml.scss"
+						]
+					}
+				]
+			}
 		},
 
 		nodeunit: {
@@ -269,6 +304,7 @@ module.exports = function( grunt ) {
 	grunt.loadNpmTasks( "grunt-contrib-clean" );
 	grunt.loadNpmTasks( "grunt-contrib-nodeunit" );
 	grunt.loadNpmTasks( "grunt-contrib-watch" );
+	grunt.loadNpmTasks( "grunt-debug-task" );
 
 	grunt.registerTask( "test", [ "clean", "jshint", "shared_config", "nodeunit" ] );
 	grunt.registerTask( "default", [ "test" ] );
