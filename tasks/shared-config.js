@@ -58,6 +58,13 @@ module.exports = function( grunt ) {
 			}, false );
 		}
 
+		function getStyleSafeValue( value ) {
+			if ( ! isStringNumber( value ) && value[ 0 ] !== "#" ) {
+				value = "\"" + value + "\"";
+			}
+			return value;
+		}
+
 
 		// ==============
 		// -- SETTINGS --
@@ -88,7 +95,7 @@ module.exports = function( grunt ) {
 			scss:     "${{key}}: {{value}};\n",
 			sass:     "${{key}}: {{value}}\n",
 			less:     "@{{key}}: {{value}};\n",
-			sassmaps: "{{key}}: {{value}},{{next}}",
+			sassmaps: "{{key}}: {{value}},",
 			styl:     "{{key}} = {{value}}\n",
 			amd:      "define( function() {\n\n"+options.indention+"return {{{vars}}"+options.indention+"}\n\n} );\n",
 			js:       "var {{name}} = {{vars}};\n"
@@ -120,11 +127,7 @@ module.exports = function( grunt ) {
 
 					} else {
 
-						var value = data[ key ];
-
-						if ( ! isStringNumber( value ) && value[ 0 ] !== "#" ) {
-							value = "\"" + value + "\"";
-						}
+						var value = getStyleSafeValue( data[ key ] );
 
 						content += pattern.replace( "{{key}}", name ).replace( "{{value}}", value );
 					}
@@ -159,36 +162,38 @@ module.exports = function( grunt ) {
 		function generateSassMaps( data ) {
 			var pattern = outputPattern["sassmaps"];
 
-			function generateSassMapsRecursive( data, name ) {
+			function generateSassMapsRecursive( data ) {
 				var key;
 				var currentItem = "";
 				var first = true;
 				var sassMapStr;
+				var currentValue;
 
 				for ( key in data ) {
 
 					if ( mout.lang.isObject( data[ key ] ) ) {
-						currentItem = generateSassMapsRecursive( data[ key ], key );
+						currentValue = generateSassMapsRecursive( data[ key ] );
 					} else {
-						currentItem = pattern.replace( "{{key}}", key ).replace( "{{value}}", data[ key ] );
+						currentValue = getStyleSafeValue( data[ key ] );
 					}
+
+					currentItem = pattern.replace( "{{key}}", key ).replace( "{{value}}", currentValue );
 
 					if ( first ) {
 						sassMapStr = indent("\n" + currentItem, options.indention);
 						first = false;
 					} else {
-						sassMapStr = sassMapStr.replace( "{{next}}", indent("\n" + currentItem, options.indention) );
+						sassMapStr = sassMapStr + indent("\n" + currentItem, options.indention);
 					}
+
+					// remove last comma before closing map
+					sassMapStr = sassMapStr.replace( ",\n" + options.indention + ")", "\n" + options.indention + ")" );
 				}
 
-				// when name is passed, it means that we"ve been called by a wrapper object
-				if ( name ) {
-					return name + ": (" + sassMapStr.replace( "{{next}}", "" ).replace(",)", ")") + "\n)";
-				} else {
-					return "(" + sassMapStr.replace( "{{next}}", "" ).replace(",)", ")") + "\n)";
-				}
+				// the slice removes the last comma 
+				return "(" + sassMapStr.slice( 0, -1 ) + "\n)";
 			}
-			return "$" + options.name + ": " + generateSassMapsRecursive( data ).replace( "{{next}}", "" ).replace( /,\)/g , ")" ) + ";";
+			return "$" + options.name + ": " + generateSassMapsRecursive( data ).replace( /,\)/g , ")" ) + ";";
 
 		}
 
