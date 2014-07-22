@@ -185,9 +185,13 @@ module.exports = function( grunt ) {
 					} else {
 						sassMapStr = sassMapStr + indent("\n" + currentItem, options.indention);
 					}
+
+					// remove last comma before closing map
+					sassMapStr = sassMapStr.replace( ",\n" + options.indention + ")", "\n" + options.indention + ")" );
 				}
 
-				return "(" + sassMapStr.replace(",)", ")") + "\n)";
+				// the slice removes the last comma 
+				return "(" + sassMapStr.slice( 0, -1 ) + "\n)";
 			}
 			return "$" + options.name + ": " + generateSassMapsRecursive( data ).replace( /,\)/g , ")" ) + ";";
 
