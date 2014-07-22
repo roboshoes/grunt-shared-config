@@ -10,6 +10,7 @@
 "use strict";
 
 var mout = require( "mout" );
+var maskObject = require( "object-mask" );
 
 module.exports = function( grunt ) {
 
@@ -50,6 +51,18 @@ module.exports = function( grunt ) {
 			return true;
 		}
 
+		function readFile( filePath ) {
+			// fetch JSON or YAML from file
+			var fileType = filePath.split( "." ).pop().toLowerCase();
+			var src;
+			if ( fileType === 'yml' || fileType === 'yaml' ) {
+				src = grunt.file.readYAML( filePath );
+			} else {
+				src = grunt.file.readJSON( filePath );
+			}
+			return src;
+		}
+
 		function isStringNumber( value ) {
 			var units = [ "em", "px", "s", "in", "mm", "cm", "pt", "pc", "%" ];
 
@@ -78,6 +91,9 @@ module.exports = function( grunt ) {
 			name: "config",
 			useSassMaps: false,
 			indention: "\t",
+			mask: undefined,
+			maskFile: undefined,
+			maskAllowMode: false
 		} );
 
 		// possible variable formats
@@ -232,6 +248,19 @@ module.exports = function( grunt ) {
 			return newData;
 		}
 
+		function removeEmptyObjects ( object ) {
+			for (var key in object) {
+				if ( mout.lang.isObject( object[ key ] ) ) {
+					if ( Object.keys( object[ key ] ).length === 0 ) {
+						delete object[key];
+					} else {
+						object[key] = removeEmptyObjects( object[key] );
+					}
+				}
+			}
+			return object;
+		}
+
 		function indent( content, indention ) {
 			content = content.replace( /\n/g, "\n" + indention );
 
@@ -241,7 +270,6 @@ module.exports = function( grunt ) {
 
 			return content;
 		}
-
 
 		// ===================
 		// -- SHARED CONFIG --
@@ -254,13 +282,26 @@ module.exports = function( grunt ) {
 
 			file.src.filter( fileExists ).map( function( filePath ) {
 
-				// fetch JSON or YAML from file
-				var fileType = filePath.split( "." ).pop().toLowerCase();
-				var src;
-				if ( fileType === 'yml' || fileType === 'yaml' ) {
-					src = grunt.file.readYAML( filePath );
-				} else {
-					src = grunt.file.readJSON( filePath );
+				var src = readFile( filePath );
+
+				// mask
+				var mask = null;
+				// if maskFile is given, read it in
+				if ( typeof options.maskFile !== "undefined" && fileExists( options.maskFile ) ) {
+					mask = readFile( options.maskFile );
+				}
+				// if mask object is given, merge it with the mask from file if any
+				if ( typeof options.mask !== "undefined" && mout.lang.isObject( options.mask )) {
+					if ( mask !== null ) {
+						mask = mout.object.deepMixIn( mask, options.mask );
+					} else {
+						mask = options.mask;
+					}
+				}
+				// if this results in a mask, apply it
+				if ( mask !== null ) {
+					src = maskObject( src, mask, options.maskAllowMode );
+					src = removeEmptyObjects( src );
 				}
 
 				// add configuration vars to main config
@@ -268,6 +309,10 @@ module.exports = function( grunt ) {
 
 			} );
 
+			if ( Object.keys( srcConfig ).length === 0 ) {
+				grunt.log.warn( "Empty src results in no output" );
+				return false;
+			}
 
 			destinationFiles.map( function( filePath ) {
 

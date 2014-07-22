@@ -1,0 +1,11 @@
+$globalConfig: (
+	height: 120px,
+	animation-speed: 100s,
+	car: (
+		green: #00FF00,
+		inner: (
+			seat: 10px
+		)
+	),
+	string: "a/path/to/something.png"
+);
