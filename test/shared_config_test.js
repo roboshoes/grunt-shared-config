@@ -114,8 +114,8 @@ exports.shared_config = {
 			maskAllow: [ grunt.file.read( "tmp/config_mask_allow_yml.scss"),  grunt.file.read( "test/expected/config_mask_allow.scss" ) ]
 		};
 
-		test.equal( files.mask[0], files.mask[1], "Masked (config_mask_yml.scss) should be equal." );
-		test.equal( files.maskAllow[0], files.maskAllow[1], "Masked allow (config_mask_allow_yml.scss) should be equal." );
+		test.equal( files.mask[0], files.mask[1], "Masked (config_mask_yml.scss) should be equal to config_mask.scss." );
+		test.equal( files.maskAllow[0], files.maskAllow[1], "Masked allow (config_mask_allow_yml.scss) should be equal to config_mask_allow.scss." );
 
 		test.done();
 	}
