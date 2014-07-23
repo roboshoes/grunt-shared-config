@@ -306,6 +306,30 @@ module.exports = function( grunt ) {
 					}
 				]
 			},
+			mask5: {
+				options: {
+					name: "globalConfig",
+					maskFile: "test/fixtures/mask1.yml",
+					mask: {
+						height: false,
+						amount: true,
+						car: {
+							green: false,
+							blue: true
+						}
+					}
+				},
+				files: [
+					{
+						src: [
+							"test/fixtures/config.yml"
+						],
+						dest: [
+							"tmp/config_mask5.js"
+						]
+					}
+				]
+			},
 		},
 
 		nodeunit: {
@@ -321,6 +345,7 @@ module.exports = function( grunt ) {
 	grunt.loadNpmTasks( "grunt-contrib-clean" );
 	grunt.loadNpmTasks( "grunt-contrib-nodeunit" );
 	grunt.loadNpmTasks( "grunt-contrib-watch" );
+	grunt.loadNpmTasks( "grunt-debug-task" );
 
 	grunt.registerTask( "test", [ "clean", "jshint", "shared_config", "nodeunit" ] );
 	grunt.registerTask( "default", [ "test" ] );
