@@ -50,6 +50,18 @@ module.exports = function( grunt ) {
 			return true;
 		}
 
+		function readFile( filePath ) {
+			// fetch JSON or YAML from file
+			var fileType = filePath.split( "." ).pop().toLowerCase();
+			var src;
+			if ( fileType === 'yml' || fileType === 'yaml' ) {
+				src = grunt.file.readYAML( filePath );
+			} else {
+				src = grunt.file.readJSON( filePath );
+			}
+			return src;
+		}
+
 		function isStringNumber( value ) {
 			var units = [ "em", "px", "s", "in", "mm", "cm", "pt", "pc", "%" ];
 
@@ -78,6 +90,9 @@ module.exports = function( grunt ) {
 			name: "config",
 			useSassMaps: false,
 			indention: "\t",
+			mask: undefined,
+			maskFile: undefined,
+			maskAllowUnknownOnFirstLevel: false,
 		} );
 
 		// possible variable formats
@@ -242,6 +257,49 @@ module.exports = function( grunt ) {
 			return content;
 		}
 
+		function maskObject( src, mask, allowUnknownOnFirstLevel ) {
+			var result = {};
+
+			// check for every key in src, if it should end up in the result
+			for ( var key in src ) {
+				// if this property is in the mask too, check that
+				if ( mask.hasOwnProperty( key ) ) {
+					// if this mask is an object, send it through maskObject again
+					if ( typeof mask[ key ] === 'object' ) {
+						// we allow to include unknown objects only on the root level
+						// on every other level, you can just use "allowAll"
+						result[ key ] = maskObject( src[ key ], mask[ key ], false );
+					} else {
+						switch ( mask[ key ] ) {
+							case true:
+								if ( typeof src[ key ] === 'object' ) {
+									// this is the case, if we have an object in the src, but only true in the mask
+									// in this case, we only allow one level of the src in the result
+									var subResult = {};
+									for ( var subKey in src[ key ] ) {
+										//only add it to result if it's not an object
+										if ( typeof src[ key ][ subKey ] !== 'object' ) {
+											subResult[ subKey ] = src[ key ][ subKey ];
+										}
+									}
+									result[ key ] = subResult;
+								} else {
+									result[ key ] = src[ key ];
+								}
+								break;
+							case 'allowAll':
+								result[ key ] = src[ key ];
+								break;
+						}
+					}
+				// otherwise we only include it, if other first level object should end up in the result
+				} else if (allowUnknownOnFirstLevel) {
+					result[ key ] = src[ key ];
+				}
+			}
+			return result;
+		}
+
 
 		// ===================
 		// -- SHARED CONFIG --
@@ -254,13 +312,27 @@ module.exports = function( grunt ) {
 
 			file.src.filter( fileExists ).map( function( filePath ) {
 
-				// fetch JSON or YAML from file
-				var fileType = filePath.split( "." ).pop().toLowerCase();
-				var src;
-				if ( fileType === 'yml' || fileType === 'yaml' ) {
-					src = grunt.file.readYAML( filePath );
-				} else {
-					src = grunt.file.readJSON( filePath );
+				var src = readFile( filePath );
+
+				// mask
+				var mask = null;
+				// if maskFile is given, read it in
+				if ( typeof options.maskFile !== "undefined" && fileExists( options.maskFile ) ) {
+					mask = readFile( options.maskFile );
+				}
+				// if mask object is given, merge it with the mask from file if any
+				if ( typeof options.mask !== "undefined" && mout.lang.isObject( options.mask )) {
+					if ( mask !== null ) {
+						mask = mout.object.deepMixIn( mask, options.mask );
+					} else {
+						mask = options.mask;
+					}
+				}
+				// if this results in a mask, apply it
+				if ( mask !== null ) {
+					src = maskObject( src, mask, options.maskAllowUnknownOnFirstLevel );
+					var a = 1;
+					//src = removeEmptyObjects( src );
 				}
 
 				// add configuration vars to main config
