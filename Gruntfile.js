@@ -217,7 +217,95 @@ module.exports = function( grunt ) {
 						]
 					}
 				]
-			}
+			},
+
+			mask: {
+				options: {
+					name: "globalConfig",
+					useSassMaps: true,
+					maskFile: "test/fixtures/mask.json"
+				},
+				files: [
+					{
+						src: [
+							"test/fixtures/config.yml"
+						],
+						dest: [
+							"tmp/config_mask.scss"
+						]
+					}
+				]
+			},
+			mask1: {
+				options: {
+					name: "globalConfig",
+					useSassMaps: true,
+					maskFile: "test/fixtures/mask1.yml"
+				},
+				files: [
+					{
+						src: [
+							"test/fixtures/config.yml"
+						],
+						dest: [
+							"tmp/config_mask1.scss"
+						]
+					}
+				]
+			},
+			mask2: {
+				options: {
+					name: "globalConfig",
+					useSassMaps: true,
+					maskFile: "test/fixtures/mask2.yml"
+				},
+				files: [
+					{
+						src: [
+							"test/fixtures/config.yml"
+						],
+						dest: [
+							"tmp/config_mask2.scss"
+						]
+					}
+				]
+			},
+			mask3: {
+				options: {
+					name: "globalConfig",
+					useSassMaps: true,
+					maskFile: "test/fixtures/mask1.yml",
+					maskAllowUnknownOnFirstLevel: true
+				},
+				files: [
+					{
+						src: [
+							"test/fixtures/config.yml"
+						],
+						dest: [
+							"tmp/config_mask3.scss"
+						]
+					}
+				]
+			},
+			mask4: {
+				options: {
+					name: "globalConfig",
+					useSassMaps: true,
+					maskFile: "test/fixtures/mask3.yml",
+					maskAllowUnknownOnFirstLevel: true
+				},
+				files: [
+					{
+						src: [
+							"test/fixtures/config.yml"
+						],
+						dest: [
+							"tmp/config_mask4.scss"
+						]
+					}
+				]
+			},
 		},
 
 		nodeunit: {

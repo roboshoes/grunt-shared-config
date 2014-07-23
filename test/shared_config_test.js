@@ -93,4 +93,24 @@ exports.shared_config = {
 		test.done();
 	},
 
+	mask_options: function( test ) {
+		test.expect( 5 );
+
+		var files = {
+			mask:  [ grunt.file.read( "tmp/config_mask.scss"),  grunt.file.read( "test/expected/config_mask.scss" ) ],
+			mask1:  [ grunt.file.read( "tmp/config_mask1.scss"),  grunt.file.read( "test/expected/config_mask1.scss" ) ],
+			mask2:  [ grunt.file.read( "tmp/config_mask2.scss"),  grunt.file.read( "test/expected/config_mask2.scss" ) ],
+			mask3:  [ grunt.file.read( "tmp/config_mask3.scss"),  grunt.file.read( "test/expected/config_mask3.scss" ) ],
+			mask4:  [ grunt.file.read( "tmp/config_mask4.scss"),  grunt.file.read( "test/expected/config_mask4.scss" ) ],
+		};
+
+		test.equal( files.mask[0], files.mask[1], "Masked file (config_mask.scss) should be equal." );
+		test.equal( files.mask1[0], files.mask1[1], "Masked file (config_mask1.scss) should be equal." );
+		test.equal( files.mask2[0], files.mask2[1], "Masked file (config_mask2.scss) should be equal." );
+		test.equal( files.mask3[0], files.mask3[1], "Masked file (config_mask3.scss) should be equal." );
+		test.equal( files.mask4[0], files.mask4[1], "Masked file (config_mask4.scss) should be equal." );
+
+		test.done();
+	},
+
 };
