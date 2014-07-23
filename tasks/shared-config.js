@@ -340,6 +340,10 @@ module.exports = function( grunt ) {
 
 			} );
 
+			if ( Object.keys( srcConfig ).length === 0 ) {
+				grunt.log.warn( "Empty src results in no output" );
+				return false;
+			}
 
 			destinationFiles.map( function( filePath ) {
 
