@@ -3,7 +3,7 @@
     "animation-speed": false,
     "car": {
         "green": false,
-        "inner": "allowAll"
+        "inner": "allowFirstLevel"
     },
     "string": false
 }

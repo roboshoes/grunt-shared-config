@@ -267,29 +267,21 @@ module.exports = function( grunt ) {
 					// if this mask is an object, send it through maskObject again
 					if ( typeof mask[ key ] === 'object' ) {
 						// we allow to include unknown objects only on the root level
-						// on every other level, you can just use "allowAll"
+						// on every other level, you can just use "true"
 						result[ key ] = maskObject( src[ key ], mask[ key ], false );
 					} else {
-						switch ( mask[ key ] ) {
-							case true:
-								if ( typeof src[ key ] === 'object' ) {
-									// this is the case, if we have an object in the src, but only true in the mask
-									// in this case, we only allow one level of the src in the result
-									var subResult = {};
-									for ( var subKey in src[ key ] ) {
-										//only add it to result if it's not an object
-										if ( typeof src[ key ][ subKey ] !== 'object' ) {
-											subResult[ subKey ] = src[ key ][ subKey ];
-										}
-									}
-									result[ key ] = subResult;
-								} else {
-									result[ key ] = src[ key ];
+						if ( mask[ key] === true ) {
+							result[ key ] = src[ key ];
+						}
+						if ( mask[ key] === 'allowFirstLevel' ) {
+							var subResult = {};
+							for ( var subKey in src[ key ] ) {
+								//only add it to result if it's not an object -> only first level
+								if ( typeof src[ key ][ subKey ] !== 'object' ) {
+									subResult[ subKey ] = src[ key ][ subKey ];
 								}
-								break;
-							case 'allowAll':
-								result[ key ] = src[ key ];
-								break;
+							}
+							result[ key ] = subResult;
 						}
 					}
 				// otherwise we only include it, if other first level object should end up in the result

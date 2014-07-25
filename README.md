@@ -341,15 +341,14 @@ _config.json_
 _mask.json_
 ```js
 {
-    "height": true, // true means: include that value in the output. If in the source, there is an object at this key, include only the first level of that object
-    "animation-speed": false, // false means: don't include that in the outpu
+    "height": true,
+    "animation-speed": false,
     "car": {
         "green": false,
-        "inner": "allowAll" // allowAll means: include this and all it's children recursively
+        "inner": "allowFirstLevel"
     },
     "string": false
 }
-```
 ```
 _styles/config.scss_
 ```scss
