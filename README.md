@@ -315,9 +315,9 @@ grunt.initConfig( {
 			dest: [
 				"styles/config.scss"
 			]
-		},
+		}
 	}
-} )
+} );
 ```
 _config.json_
 ```js

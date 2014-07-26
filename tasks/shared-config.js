@@ -92,7 +92,7 @@ module.exports = function( grunt ) {
 			indention: "\t",
 			mask: undefined,
 			maskFile: undefined,
-			maskAllowUnknownOnFirstLevel: false,
+			maskAllowUnknownOnFirstLevel: false
 		} );
 
 		// possible variable formats
@@ -270,10 +270,10 @@ module.exports = function( grunt ) {
 						// on every other level, you can just use "true"
 						result[ key ] = maskObject( src[ key ], mask[ key ], false );
 					} else {
-						if ( mask[ key] === true ) {
+						if ( mask[ key ] === true ) {
 							result[ key ] = src[ key ];
 						}
-						if ( mask[ key] === 'allowFirstLevel' ) {
+						if ( mask[ key ] === 'allowFirstLevel' ) {
 							var subResult = {};
 							for ( var subKey in src[ key ] ) {
 								//only add it to result if it's not an object -> only first level
