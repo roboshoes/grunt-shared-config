@@ -345,7 +345,7 @@ _mask.json_
     "animation-speed": false,
     "car": {
         "green": false,
-        "inner": "allowFirstLevel"
+        "inner": "allowLevel-1"
     },
     "string": false
 }

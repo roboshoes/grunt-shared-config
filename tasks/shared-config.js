@@ -257,38 +257,97 @@ module.exports = function( grunt ) {
 			return content;
 		}
 
+		function getLevelsFromObject( src, numberOfLevels ) {
+			var result = {};
+
+			if ( numberOfLevels === 0 ) {
+
+				return result;
+
+			}
+
+			if ( typeof src !== 'object' ) {
+
+				return src;
+
+			}
+
+			for ( var key in src ) {
+
+				if ( numberOfLevels === 1 ) {
+
+					// only add it to result if it's not an object
+					// we don't want empty objects in the result
+					if ( typeof src[ key ] !== 'object' ) {
+
+						result[ key ] = src[ key ];
+
+					}
+
+				} else {
+
+					result[ key ] = getLevelsFromObject( src[ key ], numberOfLevels-1);
+
+				}
+			}
+			return result;
+		}
+
 		function maskObject( src, mask, allowUnknownOnFirstLevel ) {
 			var result = {};
 
 			// check for every key in src, if it should end up in the result
 			for ( var key in src ) {
+
 				// if this property is in the mask too, check that
 				if ( mask.hasOwnProperty( key ) ) {
+
 					// if this mask is an object, send it through maskObject again
 					if ( typeof mask[ key ] === 'object' ) {
+
 						// we allow to include unknown objects only on the root level
 						// on every other level, you can just use "true"
 						result[ key ] = maskObject( src[ key ], mask[ key ], false );
+
 					} else {
+
+						// true, include everything in result
 						if ( mask[ key ] === true ) {
+
 							result[ key ] = src[ key ];
-						}
-						if ( mask[ key ] === 'allowFirstLevel' ) {
-							var subResult = {};
-							for ( var subKey in src[ key ] ) {
-								//only add it to result if it's not an object -> only first level
-								if ( typeof src[ key ][ subKey ] !== 'object' ) {
-									subResult[ subKey ] = src[ key ][ subKey ];
+
+						} else {
+
+							// if the mask value starts with 'allowLevel-' we get the number after '-' and allow as many levels
+							if ( typeof mask[ key ] === 'string' && mask[ key ].split( '-' )[ 0 ] === 'allowLevel' ) {
+
+								var numberOfLevels = parseInt( mask[ key ].split( '-' )[ 1 ], 10 );
+
+								if ( isNaN( numberOfLevels ) ) {
+
+									grunt.log.error( [ 'invalid mask value: ' + mask[ key ] ] );
+
+								} else {
+
+									result[ key ] = getLevelsFromObject(src[ key ], numberOfLevels);
+
 								}
+
+							} else if ( mask[ key ] !== false ) {
+
+								grunt.log.error( [ 'invalid mask value: ' + mask[ key ] ] );
+
 							}
-							result[ key ] = subResult;
 						}
 					}
 				// otherwise we only include it, if other first level object should end up in the result
-				} else if (allowUnknownOnFirstLevel) {
+				} else if ( allowUnknownOnFirstLevel ) {
+
 					result[ key ] = src[ key ];
+
 				}
 			}
+
 			return result;
 		}
 
