@@ -82,6 +82,13 @@ If mask is an object, this is used to mask the config object before output.
 If mask is a string and a file exists at this path (either JSON or YAML), this is read in and used to mask the config object before output.
 If mask is an array, the array items are treated one after the other like if it would be a single value (string or object) by overwriting the former already existing mask.
 
+A mask is an object (if from file, read as JSON or YAML) that includes key value pairs like this:
+`key: true` includes this value including any nested objects
+`key: false` don't include this
+`key: allowLevel-1` include the first level in the result, any nested objects will not end up in the result. You can use `allowLevel-2` and so on, to define the number of levels to include.
+
+Of course you can nest these key value pairs to have granular control over what ends up in the output.
+
 
 #### options.maskAllowUnknownOnFirstLevel
 Type: `Boolean`
