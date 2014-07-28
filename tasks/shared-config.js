@@ -91,7 +91,6 @@ module.exports = function( grunt ) {
 			useSassMaps: false,
 			indention: "\t",
 			mask: undefined,
-			maskFile: undefined,
 			maskAllowUnknownOnFirstLevel: false
 		} );
 
@@ -367,23 +366,71 @@ module.exports = function( grunt ) {
 
 				// mask
 				var mask = null;
-				// if maskFile is given, read it in
-				if ( typeof options.maskFile !== "undefined" && fileExists( options.maskFile ) ) {
-					mask = readFile( options.maskFile );
-				}
-				// if mask object is given, merge it with the mask from file if any
-				if ( typeof options.mask !== "undefined" && mout.lang.isObject( options.mask )) {
-					if ( mask !== null ) {
-						mask = mout.object.deepMixIn( mask, options.mask );
+
+				// if mask is a string try to read the file at this path
+				if ( typeof options.mask !== "undefined" && mout.lang.isString( options.mask ) ) {
+
+					if ( fileExists( options.mask ) ) {
+
+						mask = readFile( options.mask );
+
 					} else {
-						mask = options.mask;
+
+						grunt.log.error('Given mask is a String but file could not be found: ' + options.mask );
+
 					}
+
 				}
+
+				// if mask is an object take this as the mask
+				if ( typeof options.mask !== "undefined" && mout.lang.isObject( options.mask )) {
+
+					mask = options.mask;
+
+				}
+
+				// if mask is an array, merge it's strings and objects
+				if ( typeof options.mask !== "undefined" && mout.lang.isArray( options.mask )) {
+
+					options.mask.forEach( function( maskItem, index ) {
+
+						var maskItemObject;
+
+						if ( mout.lang.isString( maskItem) && fileExists( maskItem ) ) {
+
+							maskItemObject = readFile( maskItem );
+
+						} else if ( mout.lang.isObject( maskItem ) ) {
+
+							maskItemObject = maskItem;
+
+						} else {
+
+							grunt.log.error('Given mask item is not a string or not an object or an unexisting file: ' + maskItem );
+
+						}
+
+						// merge the maskItem with the already existing mask if any
+						if ( mask !== null ) {
+
+							mask = mout.object.deepMixIn( mask, maskItemObject );
+
+						} else {
+
+							mask = maskItemObject;
+
+						}
+
+					});
+
+				}
+
 				// if this results in a mask, apply it
 				if ( mask !== null ) {
+
 					src = maskObject( src, mask, options.maskAllowUnknownOnFirstLevel );
 					var a = 1;
-					//src = removeEmptyObjects( src );
+
 				}
 
 				// add configuration vars to main config

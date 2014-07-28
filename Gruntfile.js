@@ -223,7 +223,7 @@ module.exports = function( grunt ) {
 				options: {
 					name: "globalConfig",
 					useSassMaps: true,
-					maskFile: "test/fixtures/mask.json"
+					mask: "test/fixtures/mask.json"
 				},
 				files: [
 					{
@@ -240,7 +240,7 @@ module.exports = function( grunt ) {
 				options: {
 					name: "globalConfig",
 					useSassMaps: true,
-					maskFile: "test/fixtures/mask1.yml"
+					mask: "test/fixtures/mask1.yml"
 				},
 				files: [
 					{
@@ -257,7 +257,7 @@ module.exports = function( grunt ) {
 				options: {
 					name: "globalConfig",
 					useSassMaps: true,
-					maskFile: "test/fixtures/mask2.yml"
+					mask: "test/fixtures/mask2.yml"
 				},
 				files: [
 					{
@@ -274,7 +274,10 @@ module.exports = function( grunt ) {
 				options: {
 					name: "globalConfig",
 					useSassMaps: true,
-					maskFile: "test/fixtures/mask1.yml",
+					mask: [
+						"test/fixtures/mask1.yml",
+						"a nonexisting file to test the error handling"
+					],
 					maskAllowUnknownOnFirstLevel: true
 				},
 				files: [
@@ -292,7 +295,7 @@ module.exports = function( grunt ) {
 				options: {
 					name: "globalConfig",
 					useSassMaps: true,
-					maskFile: "test/fixtures/mask3.yml",
+					mask: "test/fixtures/mask3.yml",
 					maskAllowUnknownOnFirstLevel: true
 				},
 				files: [
@@ -309,15 +312,18 @@ module.exports = function( grunt ) {
 			mask5: {
 				options: {
 					name: "globalConfig",
-					maskFile: "test/fixtures/mask1.yml",
-					mask: {
-						height: false,
-						amount: true,
-						car: {
-							green: false,
-							blue: true
-						}
-					}
+					mask: [
+						"test/fixtures/mask1.yml",
+						{
+							height: false,
+							amount: true,
+							car: {
+								green: false,
+								blue: true
+							}
+						},
+						"a nonexisting file to test the error handling"
+					]
 				},
 				files: [
 					{
