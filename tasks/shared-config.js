@@ -81,7 +81,7 @@ module.exports = function( grunt ) {
 		}
 
 		function getStyleSafeValue( value ) {
-			if ( ! isStringNumber( value ) && value[ 0 ] !== "#" ) {
+			if ( !isStringNumber( value ) && value[ 0 ] !== "#"	&& typeof value !== "boolean" ) {
 				value = "\"" + value + "\"";
 			}
 			return value;
@@ -213,6 +213,7 @@ module.exports = function( grunt ) {
 					sassMapStr = sassMapStr.replace( ",\n" + options.indention + ")", "\n" + options.indention + ")" );
 				}
 
+				// the slice removes the last comma
 				return "(" + sassMapStr.slice( 0, -1 ) + "\n)";
 			}
 

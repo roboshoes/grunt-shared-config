@@ -13,5 +13,7 @@ var globalConfig = {
 		}
 	},
 	"string": "a/path/to/something.png",
+	"truefalse": true,
+	"truefalsestring": "true",
 	"offset": 20
 };
