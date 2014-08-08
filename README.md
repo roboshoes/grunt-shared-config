@@ -90,11 +90,12 @@ A mask is an object (if from file, read as JSON or YAML) that includes key value
 Of course you can nest these key value pairs to have granular control over what ends up in the output.
 
 
-#### options.maskAllowUnknownOnFirstLevel
-Type: `Boolean`
-Default: false
+#### options.maskAllowLevel
+Type: `Number`
+Default: 0
 
-If set to true, any first level value in the source will end up in the output. If this is false (default), then unknown (as in not specified in the mask) items will get removed.
+Defines how many levels of will be ignored by the mask object. Setting it to 1 for instance means that every value 1 level deeply nested in the config will be accepted.
+By default the value will be masked, given there is a mask file, if it's not in before mentioned file.
 
 
 ### Options (Files)

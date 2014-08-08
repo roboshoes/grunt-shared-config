@@ -278,7 +278,7 @@ module.exports = function( grunt ) {
 						"test/fixtures/mask1.yml",
 						"a nonexisting file to test the error handling"
 					],
-					maskAllowUnknownOnFirstLevel: true
+					maskAllowLevel: true
 				},
 				files: [
 					{
@@ -296,7 +296,7 @@ module.exports = function( grunt ) {
 					name: "globalConfig",
 					useSassMaps: true,
 					mask: "test/fixtures/mask3.yml",
-					maskAllowUnknownOnFirstLevel: true
+					maskAllowLevel: 1
 				},
 				files: [
 					{

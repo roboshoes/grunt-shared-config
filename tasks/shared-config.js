@@ -27,6 +27,22 @@ module.exports = function( grunt ) {
 			return mout.array.contains( varFormats, value ) ? value : varFormats[ 0 ];
 		}
 
+		function normalizeMask( mask ) {
+			if ( mask == null ) return null;
+
+			if ( mout.lang.isString( mask ) && fileExists( mask ) ) return readFile( mask );
+			else if ( mout.lang.isObject( mask ) ) return mask;
+			else if ( mout.lang.isArray ( mask ) ) {
+
+				return mask.reduce( function( previous, current ) {
+					return mout.object.deepMixIn( previous, normalizeMask( current ) );
+				}, {} );
+
+			}
+
+			return {};
+		}
+
 		function format( value, type ) {
 			value = value.replace( /-/g, " " );
 
@@ -51,15 +67,9 @@ module.exports = function( grunt ) {
 		}
 
 		function readFile( filePath ) {
-			// fetch JSON or YAML from file
 			var fileType = filePath.split( "." ).pop().toLowerCase();
-			var src;
-			if ( fileType === 'yml' || fileType === 'yaml' ) {
-				src = grunt.file.readYAML( filePath );
-			} else {
-				src = grunt.file.readJSON( filePath );
-			}
-			return src;
+
+			return ( ( fileType === "yml" || fileType === "yaml" ) ? grunt.file.readYAML : grunt.file.readJSON )( filePath );
 		}
 
 		function isStringNumber( value ) {
@@ -91,7 +101,7 @@ module.exports = function( grunt ) {
 			useSassMaps: false,
 			indention: "\t",
 			mask: undefined,
-			maskAllowUnknownOnFirstLevel: false
+			maskAllowLevel: 0
 		} );
 
 		// possible variable formats
@@ -111,7 +121,7 @@ module.exports = function( grunt ) {
 			less:     "@{{key}}: {{value}};\n",
 			sassmaps: "{{key}}: {{value}},",
 			styl:     "{{key}} = {{value}}\n",
-			amd:      "define( function() {\n\n"+options.indention+"return {{{vars}}"+options.indention+"}\n\n} );\n",
+			amd:      "define( function() {\n\n" + options.indention + "return {{{vars}}" + options.indention + "}\n\n} );\n",
 			js:       "var {{name}} = {{vars}};\n"
 		};
 
@@ -174,7 +184,7 @@ module.exports = function( grunt ) {
 		}
 
 		function generateSassMaps( data ) {
-			var pattern = outputPattern["sassmaps"];
+			var pattern = outputPattern.sassmaps;
 
 			function generateSassMapsRecursive( data ) {
 				var key;
@@ -200,13 +210,12 @@ module.exports = function( grunt ) {
 						sassMapStr = sassMapStr + indent("\n" + currentItem, options.indention);
 					}
 
-					// remove last comma before closing map
 					sassMapStr = sassMapStr.replace( ",\n" + options.indention + ")", "\n" + options.indention + ")" );
 				}
 
-				// the slice removes the last comma 
 				return "(" + sassMapStr.slice( 0, -1 ) + "\n)";
 			}
+
 			return "$" + options.name + ": " + generateSassMapsRecursive( data ).replace( /,\)/g , ")" ) + ";";
 
 		}
@@ -259,17 +268,10 @@ module.exports = function( grunt ) {
 		function getLevelsFromObject( src, numberOfLevels ) {
 			var result = {};
 
-			if ( numberOfLevels === 0 ) {
+			if ( numberOfLevels === 0 ) return result;
 
-				return result;
+			if ( typeof src !== "object" ) return src;
 
-			}
-
-			if ( typeof src !== 'object' ) {
-
-				return src;
-
-			}
 
 			for ( var key in src ) {
 
@@ -277,7 +279,7 @@ module.exports = function( grunt ) {
 
 					// only add it to result if it's not an object
 					// we don't want empty objects in the result
-					if ( typeof src[ key ] !== 'object' ) {
+					if ( typeof src[ key ] !== "object" ) {
 
 						result[ key ] = src[ key ];
 
@@ -285,14 +287,15 @@ module.exports = function( grunt ) {
 
 				} else {
 
-					result[ key ] = getLevelsFromObject( src[ key ], numberOfLevels-1);
+					result[ key ] = getLevelsFromObject( src[ key ], numberOfLevels - 1 );
 
 				}
 			}
+
 			return result;
 		}
 
-		function maskObject( src, mask, allowUnknownOnFirstLevel ) {
+		function maskObject( src, mask, allowLevel, round ) {
 			var result = {};
 
 			// check for every key in src, if it should end up in the result
@@ -302,11 +305,11 @@ module.exports = function( grunt ) {
 				if ( mask.hasOwnProperty( key ) ) {
 
 					// if this mask is an object, send it through maskObject again
-					if ( typeof mask[ key ] === 'object' ) {
+					if ( typeof mask[ key ] === "object" ) {
 
 						// we allow to include unknown objects only on the root level
 						// on every other level, you can just use "true"
-						result[ key ] = maskObject( src[ key ], mask[ key ], false );
+						result[ key ] = maskObject( src[ key ], mask[ key ], allowLevel, round + 1 );
 
 					} else {
 
@@ -318,29 +321,29 @@ module.exports = function( grunt ) {
 						} else {
 
 							// if the mask value starts with 'allowLevel-' we get the number after '-' and allow as many levels
-							if ( typeof mask[ key ] === 'string' && mask[ key ].split( '-' )[ 0 ] === 'allowLevel' ) {
+							if ( typeof mask[ key ] === "string" && mask[ key ].split( "-" )[ 0 ] === "allowLevel" ) {
 
-								var numberOfLevels = parseInt( mask[ key ].split( '-' )[ 1 ], 10 );
+								var numberOfLevels = parseInt( mask[ key ].split( "-" )[ 1 ], 10 );
 
 								if ( isNaN( numberOfLevels ) ) {
 
-									grunt.log.error( [ 'invalid mask value: ' + mask[ key ] ] );
+									grunt.log.error( "invalid mask value: " + mask[ key ] );
 
 								} else {
 
-									result[ key ] = getLevelsFromObject(src[ key ], numberOfLevels);
+									result[ key ] = getLevelsFromObject( src[ key ], numberOfLevels );
 
 								}
 
 							} else if ( mask[ key ] !== false ) {
 
-								grunt.log.error( [ 'invalid mask value: ' + mask[ key ] ] );
+								grunt.log.error( "invalid mask value: " + mask[ key ] );
 
 							}
 						}
 					}
 				// otherwise we only include it, if other first level object should end up in the result
-				} else if ( allowUnknownOnFirstLevel ) {
+				} else if ( allowLevel > round ) {
 
 					result[ key ] = src[ key ];
 
@@ -359,84 +362,19 @@ module.exports = function( grunt ) {
 
 			var srcConfig = {};
 			var destinationFiles = normalizeOutArray( file.dest );
+			var mask = normalizeMask( options.mask );
 
-			file.src.filter( fileExists ).map( function( filePath ) {
+			file.src.filter( fileExists ).forEach( function( filePath ) {
 
-				var src = readFile( filePath );
-
-				// mask
-				var mask = null;
-
-				// if mask is a string try to read the file at this path
-				if ( typeof options.mask !== "undefined" && mout.lang.isString( options.mask ) ) {
-
-					if ( fileExists( options.mask ) ) {
-
-						mask = readFile( options.mask );
-
-					} else {
-
-						grunt.log.error('Given mask is a String but file could not be found: ' + options.mask );
-
-					}
-
-				}
-
-				// if mask is an object take this as the mask
-				if ( typeof options.mask !== "undefined" && mout.lang.isObject( options.mask )) {
-
-					mask = options.mask;
-
-				}
-
-				// if mask is an array, merge it's strings and objects
-				if ( typeof options.mask !== "undefined" && mout.lang.isArray( options.mask )) {
-
-					options.mask.forEach( function( maskItem, index ) {
-
-						var maskItemObject;
-
-						if ( mout.lang.isString( maskItem) && fileExists( maskItem ) ) {
-
-							maskItemObject = readFile( maskItem );
-
-						} else if ( mout.lang.isObject( maskItem ) ) {
-
-							maskItemObject = maskItem;
-
-						} else {
-
-							grunt.log.error('Given mask item is not a string or not an object or an unexisting file: ' + maskItem );
-
-						}
-
-						// merge the maskItem with the already existing mask if any
-						if ( mask !== null ) {
-
-							mask = mout.object.deepMixIn( mask, maskItemObject );
-
-						} else {
-
-							mask = maskItemObject;
-
-						}
-
-					});
-
-				}
-
-				// if this results in a mask, apply it
-				if ( mask !== null ) {
-
-					src = maskObject( src, mask, options.maskAllowUnknownOnFirstLevel );
-					var a = 1;
-
-				}
-
-				// add configuration vars to main config
-				mout.object.deepMixIn( srcConfig, src );
+				mout.object.deepMixIn( srcConfig, readFile( filePath ) );
 
 			} );
+
+			if ( mask !== null ) {
+
+				srcConfig = maskObject( srcConfig, mask, options.maskAllowLevel, 0 );
+
+			}
 
 			if ( Object.keys( srcConfig ).length === 0 ) {
 				grunt.log.warn( "Empty src results in no output" );
@@ -448,9 +386,7 @@ module.exports = function( grunt ) {
 				var fileType = filePath.split( "." ).pop().toLowerCase();
 				var output, generator;
 
-
-				// search for the correct generator by filetype
-				if ( fileType === "scss" && options.useSassMaps) {
+				if ( fileType === "scss" && options.useSassMaps ) {
 
 					generator = generateSassMaps;
 
@@ -467,7 +403,6 @@ module.exports = function( grunt ) {
 					return false;
 				}
 
-				// generate and save output
 				output = generator.apply( null, [ srcConfig, fileType ] );
 				grunt.file.write( filePath, output );
 
