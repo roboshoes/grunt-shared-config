@@ -101,7 +101,7 @@ module.exports = function( grunt ) {
 			useSassMaps: false,
 			indention: "\t",
 			mask: undefined,
-			maskAllowLevel: 0
+			maskAllowUnknownLevels: 0
 		} );
 
 		// possible variable formats
@@ -373,7 +373,7 @@ module.exports = function( grunt ) {
 
 			if ( mask !== null ) {
 
-				srcConfig = maskObject( srcConfig, mask, options.maskAllowLevel, 0 );
+				srcConfig = maskObject( srcConfig, mask, options.maskAllowUnknownLevels, 0 );
 
 			}
 

@@ -90,12 +90,12 @@ A mask is an object (if from file, read as JSON or YAML) that includes key value
 Of course you can nest these key value pairs to have granular control over what ends up in the output.
 
 
-#### options.maskAllowLevel
+#### options.maskAllowUnknownLevels
 Type: `Number`
 Default: 0
 
-Defines how many levels of will be ignored by the mask object. Setting it to 1 for instance means that every value 1 level deeply nested in the config will be accepted.
-By default the value will be masked, given there is a mask file, if it's not in before mentioned file.
+Defines how many levels within the config file will be allowed if the value is not set in the mask. Setting it to 1 for instance means that every value 1 level deeply nested in the config will be accepted, if not specified in the config.
+By default the value will be 0. that means values that are not defined in the mask file will be ignored.
 
 
 ### Options (Files)
