@@ -4,10 +4,6 @@ var grunt = require( "grunt" );
 
 exports.shared_config = {
 
-	setUp: function( done ) {
-		done();
-	},
-
 	style_options: function( test ) {
 		test.expect( 12 );
 
@@ -32,23 +28,23 @@ exports.shared_config = {
 			less1_yml:  [ grunt.file.read( "tmp/config1_yml.less" ), grunt.file.read( "test/expected/config1.less" ) ]
 		};
 
-		test.equal( files.scss[0], files.scss[1], "SCSS should be equal." );
-		test.equal( files.scss_yml[0], files.scss[1], "SCSS (yml source) should be equal." );
+		test.equal( files.scss[ 0 ], files.scss[ 1 ], "SCSS should be equal." );
+		test.equal( files.scss_yml[ 0 ], files.scss[ 1 ], "SCSS (yml source) should be equal." );
 
-		test.equal( files.sass[0], files.sass[1], "SASS should be equal." );
-		test.equal( files.sass_yml[0], files.sass[1], "SASS (yml source) should be equal." );
+		test.equal( files.sass[ 0 ], files.sass[ 1 ], "SASS should be equal." );
+		test.equal( files.sass_yml[ 0 ], files.sass[ 1 ], "SASS (yml source) should be equal." );
 
-		test.equal( files.less[0], files.less[1], "LESS should be equal." );
-		test.equal( files.less_yml[0], files.less[1], "LESS (yml source) should be equal." );
+		test.equal( files.less[ 0 ], files.less[ 1 ], "LESS should be equal." );
+		test.equal( files.less_yml[ 0 ], files.less[ 1 ], "LESS (yml source) should be equal." );
 
-		test.equal( files.stylus[0], files.stylus[1], "Stylus should be equal." );
-		test.equal( files.stylus_yml[0], files.stylus[1], "Stylus (yml source) should be equal." );
+		test.equal( files.stylus[ 0 ], files.stylus[ 1 ], "Stylus should be equal." );
+		test.equal( files.stylus_yml[ 0 ], files.stylus[ 1 ], "Stylus (yml source) should be equal." );
 
-		test.equal( files.scss1[0], files.scss1[1], "SCSS (config1.scss) should be equal." );
-		test.equal( files.scss1_yml[0], files.scss1[1], "SCSS (config1.scss) (yml source) should be equal." );
+		test.equal( files.scss1[ 0 ], files.scss1[ 1 ], "SCSS (config1.scss) should be equal." );
+		test.equal( files.scss1_yml[ 0 ], files.scss1[ 1 ], "SCSS (config1.scss) (yml source) should be equal." );
 
-		test.equal( files.less1[0], files.less1[1], "LESS (config1.less) should be equal." );
-		test.equal( files.less1_yml[0], files.less1[1], "LESS (config1.less) (yml source) should be equal." );
+		test.equal( files.less1[ 0 ], files.less1[ 1 ], "LESS (config1.less) should be equal." );
+		test.equal( files.less1_yml[ 0 ], files.less1[ 1 ], "LESS (config1.less) (yml source) should be equal." );
 
 		test.done();
 	},
@@ -87,8 +83,30 @@ exports.shared_config = {
 			sassMaps1: [ grunt.file.read( "tmp/configMaps1.scss"), grunt.file.read( "test/expected/configMaps1.scss" ) ]
 		};
 
-		test.equal( files.sassMaps[0], files.sassMaps[1], "SASS Maps  (configMaps.scss) should be equal." );
-		test.equal( files.sassMaps1[0], files.sassMaps1[1], "SASS Maps  (configMaps1.scss) should be equal." );
+		test.equal( files.sassMaps[ 0 ], files.sassMaps[ 1 ], "SASS Maps  (configMaps.scss) should be equal." );
+		test.equal( files.sassMaps1[ 0 ], files.sassMaps1[ 1 ], "SASS Maps  (configMaps1.scss) should be equal." );
+
+		test.done();
+	},
+
+	mask_options: function( test ) {
+		test.expect( 6 );
+
+		var files = {
+			mask:  [ grunt.file.read( "tmp/config_mask.scss" ), grunt.file.read( "test/expected/config_mask.scss" ) ],
+			mask1: [ grunt.file.read( "tmp/config_mask1.scss" ), grunt.file.read( "test/expected/config_mask1.scss" ) ],
+			mask2: [ grunt.file.read( "tmp/config_mask2.scss" ), grunt.file.read( "test/expected/config_mask2.scss" ) ],
+			mask3: [ grunt.file.read( "tmp/config_mask3.scss" ), grunt.file.read( "test/expected/config_mask3.scss" ) ],
+			mask4: [ grunt.file.read( "tmp/config_mask4.scss" ), grunt.file.read( "test/expected/config_mask4.scss" ) ],
+			mask5: [ grunt.file.read( "tmp/config_mask5.js" ), grunt.file.read( "test/expected/config_mask5.js" ) ],
+		};
+
+		test.equal( files.mask[ 0 ], files.mask[ 1 ], "Masked file (config_mask.scss) should be equal." );
+		test.equal( files.mask1[ 0 ], files.mask1[ 1 ], "Masked file (config_mask1.scss) should be equal." );
+		test.equal( files.mask2[ 0 ], files.mask2[ 1 ], "Masked file (config_mask2.scss) should be equal." );
+		test.equal( files.mask3[ 0 ], files.mask3[ 1 ], "Masked file (config_mask3.scss) should be equal." );
+		test.equal( files.mask4[ 0 ], files.mask4[ 1 ], "Masked file (config_mask4.scss) should be equal." );
+		test.equal( files.mask5[ 0 ], files.mask5[ 1 ], "Masked file (config_mask5.js) should be equal." );
 
 		test.done();
 	},

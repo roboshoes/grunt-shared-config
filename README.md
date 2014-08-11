@@ -74,6 +74,30 @@ Default value: `\t`
 This is used for indention. Defaults to tab, pass spaces if you prefer that.
 
 
+#### options.mask
+Type: `Object` or `String` or `Array`
+Default: undefined
+
+If mask is an object, this is used to mask the config object before output.
+If mask is a string and a file exists at this path (either JSON or YAML), this is read in and used to mask the config object before output.
+If mask is an array, the array items are treated one after the other like if it would be a single value (string or object) by overwriting the former already existing mask.
+
+A mask is an object (if from file, read as JSON or YAML) that includes key value pairs like this:
+`key: true` includes this value including any nested objects
+`key: false` don't include this
+`key: allowLevel-1` include the first level in the result, any nested objects will not end up in the result. You can use `allowLevel-2` and so on, to define the number of levels to include.
+
+Of course you can nest these key value pairs to have granular control over what ends up in the output.
+
+
+#### options.maskAllowUnknownLevels
+Type: `Number`
+Default: 0
+
+Defines how many levels within the config file will be allowed if the value is not set in the mask. Setting it to 1 for instance means that every value 1 level deeply nested in the config will be accepted, if not specified in the config.
+By default the value will be 0. that means values that are not defined in the mask file will be ignored.
+
+
 ### Options (Files)
 
 
@@ -277,6 +301,68 @@ $globalConfig: (
 	)
 );
 ```
+
+#### Masking
+```js
+grunt.initConfig( {
+	shared_config: {
+		default: {
+			options: {
+				name: "globalConfig",
+				useSassMaps: true
+				mask: "mask.json",
+			},
+			src: "config.json",
+			dest: [
+				"styles/config.scss"
+			]
+		}
+	}
+} );
+```
+_config.json_
+```js
+{
+	"height": "120px",
+	"width": "500px",
+	"amount": "33%",
+	"animation-speed": "100s",
+	"color": "#BEBEBE",
+	"car": {
+		"red": "#FF0000",
+		"green": "#00FF00",
+		"blue": "#0000FF",
+		"inner": {
+			"seat": "10px"
+		}
+	},
+	"string": "a/path/to/something.png"
+}
+```
+_mask.json_
+```js
+{
+    "height": true,
+    "animation-speed": false,
+    "car": {
+        "green": false,
+        "inner": "allowLevel-1"
+    },
+    "string": false
+}
+```
+_styles/config.scss_
+```scss
+$globalConfig: (
+	height: 120px,
+	car: (
+		inner: (
+			seat: 10px
+		)
+	)
+);
+```
+
 
 
 ## Release History

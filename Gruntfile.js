@@ -217,7 +217,125 @@ module.exports = function( grunt ) {
 						]
 					}
 				]
-			}
+			},
+
+			mask: {
+				options: {
+					name: "globalConfig",
+					useSassMaps: true,
+					mask: "test/fixtures/mask.json"
+				},
+				files: [
+					{
+						src: [
+							"test/fixtures/config.yml"
+						],
+						dest: [
+							"tmp/config_mask.scss"
+						]
+					}
+				]
+			},
+			mask1: {
+				options: {
+					name: "globalConfig",
+					useSassMaps: true,
+					mask: "test/fixtures/mask1.yml"
+				},
+				files: [
+					{
+						src: [
+							"test/fixtures/config.yml"
+						],
+						dest: [
+							"tmp/config_mask1.scss"
+						]
+					}
+				]
+			},
+			mask2: {
+				options: {
+					name: "globalConfig",
+					useSassMaps: true,
+					mask: "test/fixtures/mask2.yml"
+				},
+				files: [
+					{
+						src: [
+							"test/fixtures/config.yml"
+						],
+						dest: [
+							"tmp/config_mask2.scss"
+						]
+					}
+				]
+			},
+			mask3: {
+				options: {
+					name: "globalConfig",
+					useSassMaps: true,
+					mask: [
+						"test/fixtures/mask1.yml",
+						"a nonexisting file to test the error handling"
+					],
+					maskAllowUnknownLevels: 1
+				},
+				files: [
+					{
+						src: [
+							"test/fixtures/config.yml"
+						],
+						dest: [
+							"tmp/config_mask3.scss"
+						]
+					}
+				]
+			},
+			mask4: {
+				options: {
+					name: "globalConfig",
+					useSassMaps: true,
+					mask: "test/fixtures/mask3.yml",
+					maskAllowUnknownLevels: 1
+				},
+				files: [
+					{
+						src: [
+							"test/fixtures/config.yml"
+						],
+						dest: [
+							"tmp/config_mask4.scss"
+						]
+					}
+				]
+			},
+			mask5: {
+				options: {
+					name: "globalConfig",
+					mask: [
+						"test/fixtures/mask1.yml",
+						{
+							height: false,
+							amount: true,
+							car: {
+								green: false,
+								blue: true
+							}
+						},
+						"a nonexisting file to test the error handling"
+					]
+				},
+				files: [
+					{
+						src: [
+							"test/fixtures/config.yml"
+						],
+						dest: [
+							"tmp/config_mask5.js"
+						]
+					}
+				]
+			},
 		},
 
 		nodeunit: {

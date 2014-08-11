@@ -1,0 +1,9 @@
+{
+    "height": true,
+    "animation-speed": false,
+    "car": {
+        "green": false,
+        "inner": "allowLevel-3"
+    },
+    "string": false
+}
