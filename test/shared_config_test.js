@@ -70,7 +70,7 @@ exports.shared_config = {
 		var actual = grunt.file.read( "tmp/config-amd.js" );
 		var expected = grunt.file.read( "test/expected/config-amd.js" );
 
-		test.equal( actual, expected, "JS AMD should be equal." );
+		test.equal( actual, expected, "JS AMD (config-amd.js) should be equal." );
 
 		test.done();
 	},
@@ -83,8 +83,8 @@ exports.shared_config = {
 			sassMaps1: [ grunt.file.read( "tmp/configMaps1.scss"), grunt.file.read( "test/expected/configMaps1.scss" ) ]
 		};
 
-		test.equal( files.sassMaps[ 0 ], files.sassMaps[ 1 ], "SASS Maps  (configMaps.scss) should be equal." );
-		test.equal( files.sassMaps1[ 0 ], files.sassMaps1[ 1 ], "SASS Maps  (configMaps1.scss) should be equal." );
+		test.equal( files.sassMaps[ 0 ], files.sassMaps[ 1 ], "SASS Maps (configMaps.scss) should be equal." );
+		test.equal( files.sassMaps1[ 0 ], files.sassMaps1[ 1 ], "SASS Maps (configMaps1.scss) should be equal." );
 
 		test.done();
 	},

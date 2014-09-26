@@ -17,6 +17,7 @@ define( function() {
 		"STRING": "a/path/to/something.png",
 		"TRUEFALSE": true,
 		"TRUEFALSESTRING": "true",
+		"N": null,
 		"OFFSET": 20
 	}
 

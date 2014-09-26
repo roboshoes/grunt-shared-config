@@ -81,7 +81,7 @@ module.exports = function( grunt ) {
 		}
 
 		function getStyleSafeValue( value ) {
-			if ( !isStringNumber( value ) && value[ 0 ] !== "#"	&& typeof value !== "boolean" ) {
+			if ( value !== null && !isStringNumber( value ) && value[ 0 ] !== "#" && typeof value !== "boolean" ) {
 				value = "\"" + value + "\"";
 			}
 			return value;
