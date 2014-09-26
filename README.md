@@ -366,6 +366,7 @@ $globalConfig: (
 
 
 ## Release History
+* 2014-09-25      v0.3.8      Allow null values
 * 2014-06-11      v0.3.2      Adds sass maps option
 * 2014-06-03      v0.3.0      Adds nested variables
 * 2014-04-25      v0.2.2      Fixes hex color definition in JS
