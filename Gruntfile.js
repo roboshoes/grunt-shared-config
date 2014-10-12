@@ -121,6 +121,19 @@ module.exports = function( grunt ) {
 				dest: "tmp/config-amd_yml.js"
 			},
 
+      ngconstantTest: {
+        options: {
+          name: "globalConfig",
+          jsFormat: "uppercase",
+          ngconstant: true
+        },
+        src: [
+          "test/fixtures/config.json",
+          "test/fixtures/config1.json"
+        ],
+        dest: "tmp/config-ngconstant.js"
+      },
+
 			filesTest: {
 				options: {
 					name: "globalConfig",

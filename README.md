@@ -53,6 +53,13 @@ Default value: `false`
 Defines weather or not JS files are written in AMD style or as plain objects.
 
 
+#### options.ngconstant
+Type: `Boolean`
+Default value: `false`
+
+Defines weather or not JS files are written in Angular constant module style or as plain objects. *Note*: Can not be used with AMD.
+
+
 #### options.name
 Type: `String`
 Default value: `options`
@@ -183,6 +190,61 @@ define( function() {
 	}
 
 } );
+```
+
+_styles/config.scss_
+```scss
+$height: 120px;
+$width: 500px;
+$amount: 33%;
+$animation-speed: 100s;
+$color: #BEBEBE";
+$car-blue: #0000FF;
+$car-green: #00FF00;
+```
+
+#### Angular constant module and SCSS files.
+The following task creates an [Angular constant module](https://docs.angularjs.org/api/ng/type/angular.Module#constant) based JavaScript file and all available CSS preprocessor format files. The module name will be `options.name` suffixed with `.sharedConfig`.
+
+```js
+grunt.initConfig( {
+	shared_config: {
+		default: {
+			options: {
+				name: "globalConfig",
+				cssFormat: "dash",
+				jsFormat: "uppercase",
+				ngconstant: true
+			},
+			src: "config.json",
+			dest: [
+				"styles/config.scss",
+				"styles/config.sass",
+				"styles/config.less",
+				"styles/config.styl",
+				"scripts/config.js"
+			]
+		},
+	}
+} )
+```
+
+_scripts/config.js_
+```JavaScript
+angular.module("globalConfig.sharedConfig", [])
+	.constant("globalConfig", {
+
+    return {
+      "HEIGHT": 120,
+      "WIDTH": 500,
+      "AMOUNT": 0.33,
+      "ANIMATION_SPEED": 100,
+      "COLOR": "#BEBEBE",
+      "CAR": {
+        "BLUE": "#0000FF",
+        "GREEN": "#00FF00"
+      }
+    });
 ```
 
 _styles/config.scss_

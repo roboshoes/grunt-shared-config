@@ -94,6 +94,7 @@ module.exports = function( grunt ) {
 
 		// default options
 		var options = this.options( {
+      ngconstant: false,
 			amd: false,
 			jsFormat: "uppercase",
 			cssFormat: "dash",
@@ -121,7 +122,8 @@ module.exports = function( grunt ) {
 			less:     "@{{key}}: {{value}};\n",
 			sassmaps: "{{key}}: {{value}},",
 			styl:     "{{key}} = {{value}}\n",
-			amd:      "define( function() {\n\n" + options.indention + "return {{{vars}}" + options.indention + "}\n\n} );\n",
+      amd:      "define( function() {\n\n" + options.indention + "return {{{vars}}" + options.indention + "}\n\n} );\n",
+      ngconstant: "angular.module(\"{{name}}.sharedConfig\", [])\n" + options.indention + ".constant(\"{{name}}\", {{{vars}}" + options.indention + "});",
 			js:       "var {{name}} = {{vars}};\n"
 		};
 
@@ -172,16 +174,27 @@ module.exports = function( grunt ) {
 			return outputPattern.js.replace( "{{name}}", options.name ).replace( "{{vars}}", content );
 		}
 
-		function generateAMD( data ) {
-			var preparedData = prepareValues( data );
-			var content = JSON.stringify( preparedData, null, options.indention );
-			var pattern = mout.lang.deepClone( outputPattern.amd );
+    function generateAMD( data ) {
+      var preparedData = prepareValues( data );
+      var content = JSON.stringify( preparedData, null, options.indention );
+      var pattern = mout.lang.deepClone( outputPattern.amd );
 
-			content = content.substr( 1, content.length - 2 );
-			content = indent( content, options.indention );
+      content = content.substr( 1, content.length - 2 );
+      content = indent( content, options.indention );
 
-			return pattern.replace( "{{vars}}", content );
-		}
+      return pattern.replace( "{{vars}}", content );
+    }
+
+    function generateNGConstant( data ) {
+      var preparedData = prepareValues( data );
+      var content = JSON.stringify( preparedData, null, options.indention );
+      var pattern = mout.lang.deepClone( outputPattern.ngconstant );
+
+      content = content.substr( 1, content.length - 2 );
+      content = indent( content, options.indention );
+
+      return pattern.replace( "{{name}}", options.name ).replace( "{{name}}", options.name ).replace( "{{vars}}", content );
+    }
 
 		function generateSassMaps( data ) {
 			var pattern = outputPattern.sassmaps;
@@ -397,7 +410,13 @@ module.exports = function( grunt ) {
 
 				} else if ( mout.array.contains( fileExtensions.js, fileType ) ) {
 
-					generator = options.amd ? generateAMD : generateJS;
+          if( options.amd ){
+            generator = generateAMD;
+          } else if( options.ngconstant ) {
+            generator = generateNGConstant;
+          } else {
+            generator = generateJS;
+          }
 
 				} else {
 					grunt.log.warn( "Unknown filetype (" + fileType + ")." );

@@ -64,16 +64,27 @@ exports.shared_config = {
 		test.done();
 	},
 
-	amd_options: function( test ) {
-		test.expect( 1 );
+  amd_options: function( test ) {
+    test.expect( 1 );
 
-		var actual = grunt.file.read( "tmp/config-amd.js" );
-		var expected = grunt.file.read( "test/expected/config-amd.js" );
+    var actual = grunt.file.read( "tmp/config-amd.js" );
+    var expected = grunt.file.read( "test/expected/config-amd.js" );
 
-		test.equal( actual, expected, "JS AMD (config-amd.js) should be equal." );
+    test.equal( actual, expected, "JS AMD (config-amd.js) should be equal." );
 
-		test.done();
-	},
+    test.done();
+  },
+
+  ngconstant_options: function( test ) {
+    test.expect( 1 );
+
+    var actual = grunt.file.read( "tmp/config-ngconstant.js" );
+    var expected = grunt.file.read( "test/expected/config-ngconstant.js" );
+
+    test.equal( actual, expected, "JS NGConstant (config-ngconstant.js) should be equal." );
+
+    test.done();
+  },
 
 	sass_maps_options: function( test ) {
 		test.expect( 2 );
