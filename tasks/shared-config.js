@@ -80,8 +80,16 @@ module.exports = function( grunt ) {
 			}, false );
 		}
 
+		function isCSSExpression( value ) {
+			var exprs = [ /^[A-Za-z_\-]+\(.*\)$/ ];
+
+			return exprs.reduce( function( previous, current ) {
+				return previous || ( new RegExp(current) ).test( value );
+			}, false );
+		}
+
 		function getStyleSafeValue( value ) {
-			if ( value !== null && !isStringNumber( value ) && value[ 0 ] !== "#" && typeof value !== "boolean" ) {
+			if ( value !== null && !isStringNumber( value ) && !isCSSExpression( value ) && value[ 0 ] !== "#" && typeof value !== "boolean" ) {
 				value = "\"" + value + "\"";
 			}
 			return value;
