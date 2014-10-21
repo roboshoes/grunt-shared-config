@@ -3,6 +3,10 @@ $globalConfig: (
 	amount: 33%,
 	animation-speed: 100s,
 	color: #BEBEBE,
+	labeled-color: red,
+	transparent-color: transparent,
+	rgb-color: rgb(255, 0, 0),
+	rgba-color: rgba(255, 0, 0, 0.5),
 	car: (
 		red: #FF0000,
 		green: #00FF00,
@@ -11,7 +15,9 @@ $globalConfig: (
 			seat: 10px
 		)
 	),
-	string: "a/path/to/something.png",
+	transform: rotateY(0deg) translateZ(288px),
+	path: "a/path/to/something.png",
+	string: "some string content",
 	truefalse: true,
 	truefalsestring: "true",
 	n: null
