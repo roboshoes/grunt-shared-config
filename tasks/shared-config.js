@@ -94,7 +94,7 @@ module.exports = function( grunt ) {
 
 		// default options
 		var options = this.options( {
-      ngconstant: false,
+			ngconstant: false,
 			amd: false,
 			jsFormat: "uppercase",
 			cssFormat: "dash",
@@ -117,14 +117,14 @@ module.exports = function( grunt ) {
 
 		// variable patterns
 		var outputPattern = {
-			scss:     "${{key}}: {{value}};\n",
-			sass:     "${{key}}: {{value}}\n",
-			less:     "@{{key}}: {{value}};\n",
-			sassmaps: "{{key}}: {{value}},",
-			styl:     "{{key}} = {{value}}\n",
-      amd:      "define( function() {\n\n" + options.indention + "return {{{vars}}" + options.indention + "}\n\n} );\n",
-      ngconstant: "angular.module(\"{{name}}.sharedConfig\", [])\n" + options.indention + ".constant(\"{{name}}\", {{{vars}}" + options.indention + "});",
-			js:       "var {{name}} = {{vars}};\n"
+			scss:       "${{key}}: {{value}};\n",
+			sass:       "${{key}}: {{value}}\n",
+			less:       "@{{key}}: {{value}};\n",
+			sassmaps:   "{{key}}: {{value}},",
+			styl:       "{{key}} = {{value}}\n",
+			amd:        "define( function() {\n\n" + options.indention + "return {{{vars}}" + options.indention + "}\n\n} );\n",
+			ngconstant: "angular.module(\"{{name}}.sharedConfig\", [])\n" + options.indention + ".constant(\"{{name}}\", {{{vars}}" + options.indention + "});",
+			js:         "var {{name}} = {{vars}};\n"
 		};
 
 		// Normalize user input
@@ -167,34 +167,34 @@ module.exports = function( grunt ) {
 
 
 		// Generate JavaScript files
-		function generateJS( data, type ) {
+		function generateJS( data ) {
 			var preparedData = prepareValues( data );
 			var content = JSON.stringify( preparedData, null, options.indention );
 
 			return outputPattern.js.replace( "{{name}}", options.name ).replace( "{{vars}}", content );
 		}
 
-    function generateAMD( data ) {
-      var preparedData = prepareValues( data );
-      var content = JSON.stringify( preparedData, null, options.indention );
-      var pattern = mout.lang.deepClone( outputPattern.amd );
+		function generateAMD( data ) {
+			var preparedData = prepareValues( data );
+			var content = JSON.stringify( preparedData, null, options.indention );
+			var pattern = mout.lang.deepClone( outputPattern.amd );
 
-      content = content.substr( 1, content.length - 2 );
-      content = indent( content, options.indention );
+			content = content.substr( 1, content.length - 2 );
+			content = indent( content, options.indention );
 
-      return pattern.replace( "{{vars}}", content );
-    }
+			return pattern.replace( "{{vars}}", content );
+		}
 
-    function generateNGConstant( data ) {
-      var preparedData = prepareValues( data );
-      var content = JSON.stringify( preparedData, null, options.indention );
-      var pattern = mout.lang.deepClone( outputPattern.ngconstant );
+		function generateNGConstant( data ) {
+			var preparedData = prepareValues( data );
+			var content = JSON.stringify( preparedData, null, options.indention );
+			var pattern = mout.lang.deepClone( outputPattern.ngconstant );
 
-      content = content.substr( 1, content.length - 2 );
-      content = indent( content, options.indention );
+			content = content.substr( 1, content.length - 2 );
+			content = indent( content, options.indention );
 
-      return pattern.replace( "{{name}}", options.name ).replace( "{{name}}", options.name ).replace( "{{vars}}", content );
-    }
+			return pattern.replace( /\{\{name\}\}/g, options.name ).replace( "{{vars}}", content );
+		}
 
 		function generateSassMaps( data ) {
 			var pattern = outputPattern.sassmaps;
@@ -410,13 +410,18 @@ module.exports = function( grunt ) {
 
 				} else if ( mout.array.contains( fileExtensions.js, fileType ) ) {
 
-          if( options.amd ){
-            generator = generateAMD;
-          } else if( options.ngconstant ) {
-            generator = generateNGConstant;
-          } else {
-            generator = generateJS;
-          }
+					if ( options.amd ) {
+
+						generator = generateAMD;
+
+					} else if ( options.ngconstant ) {
+
+						generator = generateNGConstant;
+
+					} else {
+
+						generator = generateJS;
+					}
 
 				} else {
 					grunt.log.warn( "Unknown filetype (" + fileType + ")." );
