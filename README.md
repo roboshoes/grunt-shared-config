@@ -234,17 +234,17 @@ _scripts/config.js_
 angular.module("globalConfig.sharedConfig", [])
 	.constant("globalConfig", {
 
-    return {
-      "HEIGHT": 120,
-      "WIDTH": 500,
-      "AMOUNT": 0.33,
-      "ANIMATION_SPEED": 100,
-      "COLOR": "#BEBEBE",
-      "CAR": {
-        "BLUE": "#0000FF",
-        "GREEN": "#00FF00"
-      }
-    });
+	return {
+		"HEIGHT": 120,
+		"WIDTH": 500,
+		"AMOUNT": 0.33,
+		"ANIMATION_SPEED": 100,
+		"COLOR": "#BEBEBE",
+		"CAR": {
+		"BLUE": "#0000FF",
+		"GREEN": "#00FF00"
+	}
+} );
 ```
 
 _styles/config.scss_
@@ -265,14 +265,14 @@ The following task creates a plain JS file.
 ```js
 grunt.initConfig( {
 	shared_config: {
-        default: {
-            options: {
-                name: "options",
-                jsFormat: "underscore"
-            },
-            src: "config.json",
-            dest: "scripts/config.js"
-        }
+		default: {
+			options: {
+				name: "options",
+				jsFormat: "underscore"
+			},
+			src: "config.json",
+			dest: "scripts/config.js"
+		}
 	}
 } )
 ```
