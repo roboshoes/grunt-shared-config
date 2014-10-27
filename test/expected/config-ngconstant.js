@@ -5,6 +5,10 @@ angular.module("globalConfig.sharedConfig", [])
 		"AMOUNT": 0.33,
 		"ANIMATION_SPEED": 100,
 		"COLOR": "#BEBEBE",
+		"LABELED_COLOR": "red",
+		"TRANSPARENT_COLOR": "transparent",
+		"RGB_COLOR": "rgb(255, 0, 0)",
+		"RGBA_COLOR": "rgba(255, 0, 0, 0.5)",
 		"CAR": {
 			"RED": "#FF0000",
 			"GREEN": "#00FF00",
@@ -13,7 +17,9 @@ angular.module("globalConfig.sharedConfig", [])
 				"SEAT": 10
 			}
 		},
-		"STRING": "a/path/to/something.png",
+		"TRANSFORM": "rotateY(0deg) translateZ(288px)",
+		"PATH": "a/path/to/something.png",
+		"STRING": "some string content",
 		"TRUEFALSE": true,
 		"TRUEFALSESTRING": "true",
 		"N": null,
