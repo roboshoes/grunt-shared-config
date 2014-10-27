@@ -1,4 +1,5 @@
 height: false
 animation-speed: true
 car: true
+path: true
 string: true

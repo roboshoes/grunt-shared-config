@@ -2,4 +2,5 @@ height: true
 animation-speed: false
 car:
   green: true
+path: true
 string: true

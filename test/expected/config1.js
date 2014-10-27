@@ -4,6 +4,10 @@ var globalConfig = {
 	"amount": 0.33,
 	"animationSpeed": 100,
 	"color": "#BEBEBE",
+	"labeledColor": "red",
+	"transparentColor": "transparent",
+	"rgbColor": "rgb(255, 0, 0)",
+	"rgbaColor": "rgba(255, 0, 0, 0.5)",
 	"car": {
 		"red": "#FF0000",
 		"green": "#00FF00",
@@ -12,7 +16,9 @@ var globalConfig = {
 			"seat": 10
 		}
 	},
-	"string": "a/path/to/something.png",
+	"transform": "rotateY(0deg) translateZ(288px)",
+	"path": "a/path/to/something.png",
+	"string": "some string content",
 	"truefalse": true,
 	"truefalsestring": "true",
 	"n": null,

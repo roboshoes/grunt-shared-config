@@ -138,14 +138,19 @@ For the following examples let's assume we supply this `config.json`.
 	"amount": "33%",
 	"animation-speed": "100s",
 	"color": "#BEBEBE",
+	"labeled-color": "red",
+	"transform": "rotateY(0deg) translateZ(288px)",
 	"car": {
 		"blue": "#0000FF",
 		"green": "#00FF00"
 	}
+	"some-text": "'some text content'"
+	"path": "some/path/to/some/file.png"
 }
 ```
 
 __NOTE__: While converting the variables for JS, it strips all units (such as `px`, `%`, etc.) and also converts percenteges from `33%` to `0.33`.
+__NOTE__: Value that must be exported as String must start and end with *'*.
 
 #### AMD and SCSS files.
 The following task creates an AMD based JavaScript file and all available CSS preprocessor format files.
@@ -183,10 +188,14 @@ define( function() {
 		"AMOUNT": 0.33,
 		"ANIMATION_SPEED": 100,
 		"COLOR": "#BEBEBE",
+		"LABELED_COLOR": "red",
+		"TRANSFORM": "rotateY(0deg) translateZ(288px)",
 		"CAR": {
 			"BLUE": "#0000FF",
 			"GREEN": "#00FF00"
 		}
+        "SOME_TEXT": "some text content"
+        "PATH": "some/path/to/some/file.png"
 	}
 
 } );
@@ -199,8 +208,12 @@ $width: 500px;
 $amount: 33%;
 $animation-speed: 100s;
 $color: #BEBEBE";
+$labeled-color: red;
+$transform: rotateY(0deg) translateZ(288px);
 $car-blue: #0000FF;
 $car-green: #00FF00;
+$some-text: "some text content"
+$path: "some/path/to/some/file.png"
 ```
 
 #### Angular constant module and SCSS files.
@@ -285,10 +298,14 @@ var options = {
 	"amount": 0.33,
 	"animation_speed": 100,
 	"color": "#BEBEBE"
+	"labeled_color": "red",
+	"transform": "rotateY(0deg) translateZ(288px)",
 	"car": {
 		"blue": "#0000FF",
 		"green": "#00FF00"
-	}
+	},
+    "some_text": "some text content"
+    "path": "some/path/to/some/file.png"
 };
 ```
 
@@ -356,11 +373,15 @@ $globalConfig: (
 	amount: 33%,
 	animation-speed: 100s,
 	color: #BEBEBE,
+	labeled-color: red,
+	transform: rotateY(0deg) translateZ(288px),
 	car: (
 		red: #FF0000,
 		green: #00FF00,
 		blue: #0000FF
-	)
+	),
+    some-text: "some text content"
+    path: "some/path/to/some/file.png"
 );
 ```
 
@@ -398,7 +419,8 @@ _config.json_
 			"seat": "10px"
 		}
 	},
-	"string": "a/path/to/something.png"
+	"path": "a/path/to/something.png"
+	"string": "'some text content'"
 }
 ```
 _mask.json_
@@ -410,6 +432,7 @@ _mask.json_
         "green": false,
         "inner": "allowLevel-1"
     },
+    "path": false
     "string": false
 }
 ```
@@ -428,6 +451,7 @@ $globalConfig: (
 
 
 ## Release History
+* 2014-10-27      v0.3.9      Allow css values
 * 2014-09-25      v0.3.8      Allow null values
 * 2014-06-11      v0.3.2      Adds sass maps option
 * 2014-06-03      v0.3.0      Adds nested variables
@@ -444,3 +468,4 @@ $globalConfig: (
 * [@meodai](https://github.com/meodai) David A.
 * [@lucalanca](https://github.com/lucalanca) João Figueiredo
 * [@benib](https://github.com/benib) Beni B.
+* [@barraq](https://github.com/barraq) Rémi Barraquand
