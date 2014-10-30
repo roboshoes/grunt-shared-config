@@ -153,6 +153,7 @@ module.exports = function (grunt) {
       cssFormat: "dash",
       singlequote: false,
       name: "config",
+      module: "config",
       useSassMaps: false,
       indention: "\t",
       mask: undefined,
