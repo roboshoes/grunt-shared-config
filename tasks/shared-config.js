@@ -12,7 +12,7 @@ var mout = require("mout");
 module.exports = function (grunt) {
   "use strict";
 
-  grunt.registerMultiTask("sharedConfig", "Your task description goes here.", function () {
+  grunt.registerMultiTask("sharedConfig", "Your task description goes here.", function createSharedConfigCTask() {
 
     // ===========
     // -- UTILS --
@@ -501,6 +501,10 @@ module.exports = function (grunt) {
 
     });
 
+  });
+
+  grunt.registerMultiTask('shared_config', 'DEPRECATED TASK. Use "sharedConfig" instead', function () {
+    grunt.log.warn('DEPRECATED TASK. Use "sharedConfig" instead.');
   });
 
 };
