@@ -60,6 +60,13 @@ Default value: `false`
 Defines weather or not JS files are written in Angular constant module style or as plain objects. *Note*: Can not be used with AMD.
 
 
+#### options.module
+Type: `String`
+Default value: `"globalConfig.sharedConfig"`
+
+This string determines the name of the Angulare constent module.
+
+
 #### options.name
 Type: `String`
 Default value: `options`
@@ -103,6 +110,13 @@ Default: 0
 
 Defines how many levels within the config file will be allowed if the value is not set in the mask. Setting it to 1 for instance means that every value 1 level deeply nested in the config will be accepted, if not specified in the config.
 By default the value will be 0. that means values that are not defined in the mask file will be ignored.
+
+
+#### options.singlequote
+Type: `Boolean`
+Default `false`
+
+If true, determines that single quotes (`'`) should be used in the JavaScript objects otherwise double quotes (`"`) are used.
 
 
 ### Options (Files)
