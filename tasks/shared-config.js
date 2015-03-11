@@ -155,6 +155,7 @@ module.exports = function( grunt ) {
 			singlequote: false,
 			name: "config",
 			module: "globalConfig.sharedConfig",
+			newModule: true,
 			useSassMaps: false,
 			indention: "\t",
 			mask: undefined,
@@ -179,7 +180,7 @@ module.exports = function( grunt ) {
 			sassmaps:   "{{key}}: {{value}},",
 			styl:       "{{key}} = {{value}}\n",
 			amd:        "define( function() {\n\n" + options.indention + "return {{{vars}}" + options.indention + "}\n\n} );\n",
-			ngconstant: "angular.module(\"{{module}}\", [])\n" + options.indention + ".constant(\"{{name}}\", {{{vars}}" + options.indention + "});",
+			ngconstant: "angular.module(\"{{module}}\"" + (options.newModule ? ', []' : '') + ")\n" + options.indention + ".constant(\"{{name}}\", {{{vars}}" + options.indention + "});",
 			js:         "var {{name}} = {{vars}};\n"
 		};
 
