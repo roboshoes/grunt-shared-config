@@ -180,7 +180,7 @@ module.exports = function( grunt ) {
 			sassmaps:   "{{key}}: {{value}},",
 			styl:       "{{key}} = {{value}}\n",
 			amd:        "define( function() {\n\n" + options.indention + "return {{{vars}}" + options.indention + "}\n\n} );\n",
-			ngconstant: "angular.module(\"{{module}}\"" + (options.newModule ? ', []' : '') + ")\n" + options.indention + ".constant(\"{{name}}\", {{{vars}}" + options.indention + "});",
+			ngconstant: "angular.module(\"{{module}}\"" + ( options.newModule ? ", []" : "" ) + ")\n" + options.indention + ".constant(\"{{name}}\", {{{vars}}" + options.indention + "});",
 			js:         "var {{name}} = {{vars}};\n"
 		};
 
@@ -280,7 +280,7 @@ module.exports = function( grunt ) {
 						currentItem = pattern.replace( "{{key}}", key ).replace( "{{value}}", currentValue );
 
 						if ( first ) {
-						sassMapStr = indent("\n" + currentItem, options.indention);
+							sassMapStr = indent("\n" + currentItem, options.indention);
 							first = false;
 						} else {
 							sassMapStr = sassMapStr + indent("\n" + currentItem, options.indention);

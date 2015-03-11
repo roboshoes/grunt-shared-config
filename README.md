@@ -78,7 +78,7 @@ true:
 	angular.module("globalConfig.sharedConfig", [])
 ```
 
-false: 
+false:
 ```js
 	angular.module("globalConfig.sharedConfig")
 ```
@@ -482,6 +482,7 @@ $globalConfig: (
 
 
 ## Release History
+* 2015-03-11      v0.3.12     Flag for merging ng modules instead of overwriting
 * 2014-10-27      v0.3.9      Allow css values
 * 2014-09-25      v0.3.8      Allow null values
 * 2014-06-11      v0.3.2      Adds sass maps option
@@ -500,3 +501,4 @@ $globalConfig: (
 * [@lucalanca](https://github.com/lucalanca) João Figueiredo
 * [@benib](https://github.com/benib) Beni B.
 * [@barraq](https://github.com/barraq) Rémi Barraquand
+* [@Kraku](https://github.com/Kraku) Maciej Podsiedlak
