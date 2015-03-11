@@ -50,21 +50,38 @@ Same as `options.cssFormat` but for js files.
 Type: `Boolean`
 Default value: `false`
 
-Defines weather or not JS files are written in AMD style or as plain objects.
+Defines whether or not JS files are written in AMD style or as plain objects.
 
 
 #### options.ngconstant
 Type: `Boolean`
 Default value: `false`
 
-Defines weather or not JS files are written in Angular constant module style or as plain objects. *Note*: Can not be used with AMD.
+Defines whether or not JS files are written in Angular constant module style or as plain objects. *Note*: Can not be used with AMD.
 
 
 #### options.module
 Type: `String`
 Default value: `"globalConfig.sharedConfig"`
 
-This string determines the name of the Angulare constent module.
+This string determines the name of the Angulare constant module.
+
+
+#### options.newModule
+Type: `Boolean`
+Default value: `true`
+
+Defines whether or not created angular module should be new.
+
+true:
+```js
+	angular.module("globalConfig.sharedConfig", [])
+```
+
+false: 
+```js
+	angular.module("globalConfig.sharedConfig")
+```
 
 
 #### options.name
