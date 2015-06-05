@@ -359,7 +359,10 @@ module.exports = function( grunt ) {
 					"test/fixtures/config.json"
 				],
 				dest: [
-					"tmp/config-namespace.scss"
+					"tmp/config-namespace.scss",
+					"tmp/config-namespace.sass",
+					"tmp/config-namespace.less",
+					"tmp/config-namespace.styl"
 				]
 			}
 		},

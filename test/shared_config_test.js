@@ -123,12 +123,19 @@ exports.shared_config = {
 	},
 
 	namespace: function( test ) {
-		test.expect( 1 );
+		test.expect( 4 );
 
-		var actual = grunt.file.read( "tmp/config-namespace.js" );
-		var expected = grunt.file.read( "test/expected/config-namespace.scss" );
+		var files = {
+			scss: [ grunt.file.read( "tmp/config-namespace.scss" ), grunt.file.read( "test/expected/config-namespace.scss" ) ],
+			sass: [ grunt.file.read( "tmp/config-namespace.sass" ), grunt.file.read( "test/expected/config-namespace.sass" ) ],
+			less: [ grunt.file.read( "tmp/config-namespace.less" ), grunt.file.read( "test/expected/config-namespace.less" ) ],
+			styl: [ grunt.file.read( "tmp/config-namespace.styl" ), grunt.file.read( "test/expected/config-namespace.styl" ) ]
+		};
 
-		test.equal( actual, expected, "Namespaced SCSS files (config-namespace.scss) should be equal." );
+		test.equal( files.scss[ 0 ], files.scss[ 1 ], "SCSS should be equal." );
+		test.equal( files.sass[ 0 ], files.sass[ 1 ], "SASS should be equal." );
+		test.equal( files.less[ 0 ], files.less[ 1 ], "LESS should be equal." );
+		test.equal( files.styl[ 0 ], files.styl[ 1 ], "Stylus should be equal." );
 
 		test.done();
 	}
