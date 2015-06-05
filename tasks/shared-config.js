@@ -159,7 +159,8 @@ module.exports = function( grunt ) {
 			useSassMaps: false,
 			indention: "\t",
 			mask: undefined,
-			maskAllowUnknownLevels: 0
+			maskAllowUnknownLevels: 0,
+			namespace: ""
 		} );
 
 		// possible variable formats
@@ -213,7 +214,7 @@ module.exports = function( grunt ) {
 
 							var value = getStyleSafeValue( data[ key ] );
 
-							content += pattern.replace( "{{key}}", name ).replace( "{{value}}", value );
+							content += pattern.replace( "{{key}}", options.namespace + name ).replace( "{{value}}", value );
 						}
 					}
 				}
@@ -231,7 +232,7 @@ module.exports = function( grunt ) {
 			var content = JSON.stringify( preparedData, null, options.indention );
 
 			var output = outputPattern.js.replace( "{{name}}", options.name ).replace( "{{vars}}", content );
-			return options.singlequote ? output.replace( /"/g, '\'' ) : output;
+			return options.singlequote ? output.replace( /"/g, "'" ) : output;
 		}
 
 		function generateAMD( data ) {
@@ -256,7 +257,7 @@ module.exports = function( grunt ) {
 			var output = pattern.replace( "{{module}}", options.module )
 				.replace( /\{\{name\}\}/g, options.name ).replace( "{{vars}}", content );
 
-			return options.singlequote ? output.replace( /"/g, '\'' ) : output;
+			return options.singlequote ? output.replace( /"/g, "'" ) : output;
 		}
 
 		function generateSassMaps( data ) {

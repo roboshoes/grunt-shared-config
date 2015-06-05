@@ -91,6 +91,13 @@ Default value: `options`
 This value is only relevant if `options.amd` is set to `false`. This String determines the name of the config object (for JavaScript).
 
 
+#### options.namespace
+Type: `String`
+Default value: `""`
+
+This value will be prepended to the name for all SCSS, SASS, LESS variables. This allows some sort of name spacing. As an example,
+a variable name `foo` with the value `"120px"`, with the `namespace` set to `"myvars-"` will be defined in SCSS as `$myvars-foo: 120px`.
+
 #### options.useSassMaps
 Type: `Boolean`
 Default value: `false`

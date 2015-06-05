@@ -122,4 +122,15 @@ exports.shared_config = {
 		test.done();
 	},
 
+	namespace: function( test ) {
+		test.expect( 1 );
+
+		var actual = grunt.file.read( "tmp/config-namespace.js" );
+		var expected = grunt.file.read( "test/expected/config-namespace.scss" );
+
+		test.equal( actual, expected, "Namespaced SCSS files (config-namespace.scss) should be equal." );
+
+		test.done();
+	}
+
 };

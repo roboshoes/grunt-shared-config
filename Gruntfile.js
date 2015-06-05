@@ -1,10 +1,10 @@
 /*
-* grunt-shared-config
-*
-*
-* Copyright (c) 2013 Mathias Paumgarten
-* Licensed under the MIT license.
-*/
+ * grunt-shared-config
+ *
+ *
+ * Copyright (c) 2013 Mathias Paumgarten
+ * Licensed under the MIT license.
+ */
 
 "use strict";
 
@@ -350,6 +350,18 @@ module.exports = function( grunt ) {
 					}
 				]
 			},
+			namespace: {
+				options: {
+					namespace: "foo-",
+					cssFormat: "dash"
+				},
+				src: [
+					"test/fixtures/config.json"
+				],
+				dest: [
+					"tmp/config-namespace.scss"
+				]
+			}
 		},
 
 		nodeunit: {
