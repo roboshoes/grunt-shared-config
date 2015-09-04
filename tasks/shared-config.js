@@ -22,6 +22,17 @@ module.exports = function( grunt ) {
 			return typeof value === "string" ? [ value ] : value;
 		}
 
+		function normalizeArrayValue( array, elementFunc, separator ) {
+			var result = "";
+			for ( var i = 0; i < array.length; i++ ) {
+				if ( result.length > 0 ) {
+					result += separator;
+				}
+				result += elementFunc( array[ i ] );
+			}
+			return result;
+		}
+
 		function normalizeFormat( value ) {
 			return mout.array.contains( varFormats, value ) ? value : varFormats[ 0 ];
 		}
@@ -32,7 +43,7 @@ module.exports = function( grunt ) {
 
 			if ( mout.lang.isString( mask ) && fileExists( mask ) ) return readFile( mask );
 			else if ( mout.lang.isObject( mask ) ) return mask;
-			else if ( mout.lang.isArray ( mask ) ) {
+			else if ( mout.lang.isArray( mask ) ) {
 
 				return mask.reduce( function( previous, current ) {
 					return mout.object.deepMixIn( previous, normalizeMask( current ) );
@@ -83,63 +94,73 @@ module.exports = function( grunt ) {
 		function isPathExpression( value ) {
 			return new RegExp(
 				"^(" +
-					// full URL
-					/// protocol identifier
+				// full URL
+				/// protocol identifier
 				"(?:(?:https?|ftp)://)" +
-					/// user:pass authentication
+				/// user:pass authentication
 				"(?:\\S+(?::\\S*)?@)?" +
 				"(?:" +
-					/// IP address exclusion
-					/// private & local networks
+				/// IP address exclusion
+				/// private & local networks
 				"(?!(?:10|127)(?:\\.\\d{1,3}){3})" +
 				"(?!(?:169\\.254|192\\.168)(?:\\.\\d{1,3}){2})" +
 				"(?!172\\.(?:1[6-9]|2\\d|3[0-1])(?:\\.\\d{1,3}){2})" +
-					/// IP address dotted notation octets
-					/// excludes loopback network 0.0.0.0
-					/// excludes reserved space >= 224.0.0.0
-					/// excludes network & broacast addresses
-					/// (first & last IP address of each class)
+				/// IP address dotted notation octets
+				/// excludes loopback network 0.0.0.0
+				/// excludes reserved space >= 224.0.0.0
+				/// excludes network & broacast addresses
+				/// (first & last IP address of each class)
 				"(?:[1-9]\\d?|1\\d\\d|2[01]\\d|22[0-3])" +
 				"(?:\\.(?:1?\\d{1,2}|2[0-4]\\d|25[0-5])){2}" +
 				"(?:\\.(?:[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-4]))" +
 				"|" +
-					/// host name
+				/// host name
 				"(?:(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)" +
-					/// domain name
+				/// domain name
 				"(?:\\.(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)*" +
-					/// TLD identifier
+				/// TLD identifier
 				"(?:\\.(?:[a-z\\u00a1-\\uffff]{2,}))" +
 				")" +
-					/// port number
+				/// port number
 				"(?::\\d{2,5})?" +
-					/// resource path
+				/// resource path
 				"(?:/\\S*)?" +
 				"|" +
-					/// or PATH
+				/// or PATH
 				"([\\w\\/]?(?:\\/[\\w\\.\\-]+)+)" +
 				")$", "i"
 			).test( value );
 		}
 
 		function isBooleanExpression( value ) {
-			return (/^true$/i).test( value );
+			return ( /^true$/i ).test( value );
 		}
 
 		function isStringExpression( value ) {
-			return (/^[\'\"].*[\'\"]$/i).test( value );
+			return ( /^[\'\"].*[\'\"]$/i ).test( value );
 		}
 
 		function getStyleSafeValue( value ) {
 			if ( isStringExpression( value ) ) {
-				value = "\"" + value.substr(1, value.length-2) + "\"";
-			} else if ( isPathExpression( value )) {
+				value = "\"" + value.substr( 1, value.length - 2 ) + "\"";
+			} else if ( isPathExpression( value ) ) {
 				value = "\"" + value + "\"";
-			} else if ( isBooleanExpression( value ) && typeof value === "string") {
+			} else if ( isBooleanExpression( value ) && typeof value === "string" ) {
 				value = "\"" + value + "\"";
+			} else if ( mout.lang.isArray( value ) ) {
+				value = normalizeArrayValue( value, getStyleSafeValue, ", " );
 			}
 
 			return value;
 		}
+
+		function getSassSafeValue( value ) {
+			if ( mout.lang.isArray( value ) ) {
+				return '(' + normalizeArrayValue( value, getSassSafeValue, ", " ) + ')';
+			}
+			return getStyleSafeValue( value );
+		}
+
 
 
 		// ==============
@@ -175,15 +196,25 @@ module.exports = function( grunt ) {
 
 		// variable patterns
 		var outputPattern = {
-			scss:       "${{key}}: {{value}};\n",
-			sass:       "${{key}}: {{value}}\n",
-			less:       "@{{key}}: {{value}};\n",
-			sassmaps:   "{{key}}: {{value}},",
-			styl:       "{{key}} = {{value}}\n",
-			amd:        "define( function() {\n\n" + options.indention + "return {{{vars}}" + options.indention + "}\n\n} );\n",
+			scss: "${{key}}: {{value}};\n",
+			sass: "${{key}}: {{value}}\n",
+			less: "@{{key}}: {{value}};\n",
+			sassmaps: "{{key}}: {{value}},",
+			styl: "{{key}} = {{value}}\n",
+			amd: "define( function() {\n\n" + options.indention + "return {{{vars}}" + options.indention + "}\n\n} );\n",
 			ngconstant: "angular.module(\"{{module}}\"" + ( options.newModule ? ", []" : "" ) + ")\n" + options.indention + ".constant(\"{{name}}\", {{{vars}}" + options.indention + "});",
-			js:         "var {{name}} = {{vars}};\n"
+			js: "var {{name}} = {{vars}};\n"
 		};
+
+		var valueConverter = {
+			scss: getSassSafeValue,
+			sass: getSassSafeValue,
+			css: getStyleSafeValue,
+			sassmaps: getSassSafeValue,
+			styl: getStyleSafeValue,
+			less: getStyleSafeValue
+		};
+
 
 		// Normalize user input
 		options.dest = normalizeOutArray( options.dest );
@@ -212,7 +243,7 @@ module.exports = function( grunt ) {
 
 						} else {
 
-							var value = getStyleSafeValue( data[ key ] );
+							var value = valueConverter[ type ]( data[ key ] );
 
 							content += pattern.replace( "{{key}}", options.namespace + name ).replace( "{{value}}", value );
 						}
@@ -275,16 +306,16 @@ module.exports = function( grunt ) {
 						if ( mout.lang.isObject( data[ key ] ) ) {
 							currentValue = generateSassMapsRecursive( data[ key ] );
 						} else {
-							currentValue = getStyleSafeValue( data[ key ] );
+							currentValue = valueConverter.sassmaps( data[ key ] );
 						}
 
 						currentItem = pattern.replace( "{{key}}", key ).replace( "{{value}}", currentValue );
 
 						if ( first ) {
-							sassMapStr = indent("\n" + currentItem, options.indention);
+							sassMapStr = indent( "\n" + currentItem, options.indention );
 							first = false;
 						} else {
-							sassMapStr = sassMapStr + indent("\n" + currentItem, options.indention);
+							sassMapStr = sassMapStr + indent( "\n" + currentItem, options.indention );
 						}
 
 						sassMapStr = sassMapStr.replace( ",\n" + options.indention + ")", "\n" + options.indention + ")" );
@@ -295,7 +326,7 @@ module.exports = function( grunt ) {
 				return "(" + sassMapStr.slice( 0, -1 ) + "\n)";
 			}
 
-			return "$" + options.name + ": " + generateSassMapsRecursive( data ).replace( /,\)/g , ")" ) + ";";
+			return "$" + options.name + ": " + generateSassMapsRecursive( data ).replace( /,\)/g, ")" ) + ";";
 
 		}
 
@@ -326,7 +357,7 @@ module.exports = function( grunt ) {
 
 						} else if ( isStringExpression( value ) ) {
 
-							value = value.substr(1, value.length-2);
+							value = value.substr( 1, value.length - 2 );
 
 						}
 

@@ -6,6 +6,16 @@ define( function() {
 		"AMOUNT": 0.33,
 		"ANIMATION_SPEED": 100,
 		"COLOR": "#BEBEBE",
+		"TRANSITION": [
+			"color 0.4s",
+			"height 1s ease"
+		],
+		"WIDTHS": [
+			1920,
+			1600,
+			1280,
+			620
+		],
 		"LABELED_COLOR": "red",
 		"TRANSPARENT_COLOR": "transparent",
 		"RGB_COLOR": "rgb(255, 0, 0)",

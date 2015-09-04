@@ -4,6 +4,16 @@ var globalConfig = {
 	"amount": 0.33,
 	"animationSpeed": 100,
 	"color": "#BEBEBE",
+	"transition": [
+		"color 0.4s",
+		"height 1s ease"
+	],
+	"widths": [
+		1920,
+		1600,
+		1280,
+		620
+	],
 	"labeledColor": "red",
 	"transparentColor": "transparent",
 	"rgbColor": "rgb(255, 0, 0)",
