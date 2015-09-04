@@ -74,7 +74,8 @@ module.exports = function( grunt ) {
 					"tmp/config.sass",
 					"tmp/config.less",
 					"tmp/config.styl",
-					"tmp/config.js"
+					"tmp/config.js",
+					"tmp/config.json"
 				]
 			},
 			style_yml: {
@@ -92,7 +93,8 @@ module.exports = function( grunt ) {
 					"tmp/config_yml.sass",
 					"tmp/config_yml.less",
 					"tmp/config_yml.styl",
-					"tmp/config_yml.js"
+					"tmp/config_yml.js",
+					"tmp/config_yml.json"
 				]
 			},
 
