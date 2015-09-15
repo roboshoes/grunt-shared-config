@@ -156,7 +156,8 @@ module.exports = function( grunt ) {
 
 		function getSassSafeValue( value ) {
 			if ( mout.lang.isArray( value ) ) {
-				return '(' + normalizeArrayValue( value, getSassSafeValue, ", " ) + ')';
+				var arrayString = normalizeArrayValue( value, getSassSafeValue, ', ' );
+				return '(' + arrayString + ')';
 			}
 			return getStyleSafeValue( value );
 		}
@@ -193,6 +194,11 @@ module.exports = function( grunt ) {
 			css: [ "scss", "sass", "less", "styl" ]
 		};
 
+		// variable converters
+		var styleConverter = {
+			scss: getSassSafeValue,
+			sass: getSassSafeValue
+		};
 
 		// variable patterns
 		var outputPattern = {
@@ -205,16 +211,6 @@ module.exports = function( grunt ) {
 			ngconstant: "angular.module(\"{{module}}\"" + ( options.newModule ? ", []" : "" ) + ")\n" + options.indention + ".constant(\"{{name}}\", {{{vars}}" + options.indention + "});",
 			js: "var {{name}} = {{vars}};\n"
 		};
-
-		var valueConverter = {
-			scss: getSassSafeValue,
-			sass: getSassSafeValue,
-			css: getStyleSafeValue,
-			sassmaps: getSassSafeValue,
-			styl: getStyleSafeValue,
-			less: getStyleSafeValue
-		};
-
 
 		// Normalize user input
 		options.dest = normalizeOutArray( options.dest );
@@ -242,8 +238,8 @@ module.exports = function( grunt ) {
 							resolveNested( data[ key ], name );
 
 						} else {
-
-							var value = valueConverter[ type ]( data[ key ] );
+							var converter = styleConverter[ type ] || getStyleSafeValue;
+							var value = converter( data[ key ] );
 
 							content += pattern.replace( "{{key}}", options.namespace + name ).replace( "{{value}}", value );
 						}
@@ -264,6 +260,13 @@ module.exports = function( grunt ) {
 
 			var output = outputPattern.js.replace( "{{name}}", options.name ).replace( "{{vars}}", content );
 			return options.singlequote ? output.replace( /"/g, "'" ) : output;
+		}
+
+		function generateJSON( data ) {
+			var preparedData = prepareValues( data );
+
+			var content = JSON.stringify( preparedData, null, options.indention );
+			return options.singlequote ? content.replace( /"/g, "'" ) : content;
 		}
 
 		function generateAMD( data ) {
@@ -301,14 +304,9 @@ module.exports = function( grunt ) {
 				var sassMapStr = "";
 				var currentValue;
 
-				for ( key in data ) {
-					if ( data.hasOwnProperty( key ) ) {
-						if ( mout.lang.isObject( data[ key ] ) ) {
-							currentValue = generateSassMapsRecursive( data[ key ] );
-						} else {
-							currentValue = valueConverter.sassmaps( data[ key ] );
-						}
-
+				if ( mout.lang.isObject( data ) ) {
+					for ( key in data ) {
+						currentValue = generateSassMapsRecursive( data[ key ] );
 						currentItem = pattern.replace( "{{key}}", key ).replace( "{{value}}", currentValue );
 
 						if ( first ) {
@@ -320,6 +318,11 @@ module.exports = function( grunt ) {
 
 						sassMapStr = sassMapStr.replace( ",\n" + options.indention + ")", "\n" + options.indention + ")" );
 					}
+				} else if ( mout.lang.isArray( data ) ) {
+					var arrayString = normalizeArrayValue( data, generateSassMapsRecursive, ', ' );
+					return '(' + arrayString + ')';
+				} else {
+					return getStyleSafeValue( data );
 				}
 
 				// the slice removes the last comma
@@ -505,6 +508,10 @@ module.exports = function( grunt ) {
 				if ( fileType === "scss" && options.useSassMaps ) {
 
 					generator = generateSassMaps;
+
+				} else if ( fileType === "json" ) {
+
+					generator = generateJSON;
 
 				} else if ( mout.array.contains( fileExtensions.css, fileType ) ) {
 
