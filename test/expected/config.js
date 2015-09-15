@@ -4,6 +4,57 @@ var globalConfig = {
 	"amount": 0.33,
 	"animation_speed": 100,
 	"color": "#BEBEBE",
+	"transition": [
+		"color 0.4s",
+		"height 1s ease"
+	],
+	"widths": [
+		1920,
+		1600,
+		1280,
+		620
+	],
+	"grid_images": [
+		[
+			"one.png",
+			"two.png",
+			"three.png"
+		],
+		[
+			"four.png",
+			"five.png",
+			"six.png"
+		],
+		[
+			"seven.png",
+			"eight.png",
+			"nine.png"
+		]
+	],
+	"deep_list": [
+		{
+			"prop1": "val1",
+			"prop2": 4,
+			"prop3": [
+				"hello",
+				"world"
+			],
+			"prop4": [
+				{
+					"word": "hello",
+					"language": "english"
+				},
+				{
+					"word": "hallo",
+					"language": "german"
+				}
+			]
+		},
+		{
+			"prop1": "val2",
+			"prop5": false
+		}
+	],
 	"labeled_color": "red",
 	"transparent_color": "transparent",
 	"rgb_color": "rgb(255, 0, 0)",

@@ -4,3 +4,4 @@ car:
   green: true
 path: true
 string: true
+deep-list: true

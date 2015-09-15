@@ -1,4 +1,5 @@
 height: false
+deep-list: false
 animation-speed: true
 car: true
 path: true

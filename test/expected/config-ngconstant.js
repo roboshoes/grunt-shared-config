@@ -5,6 +5,57 @@ angular.module("globalConfig.sharedConfig", [])
 		"AMOUNT": 0.33,
 		"ANIMATION_SPEED": 100,
 		"COLOR": "#BEBEBE",
+		"TRANSITION": [
+			"color 0.4s",
+			"height 1s ease"
+		],
+		"WIDTHS": [
+			1920,
+			1600,
+			1280,
+			620
+		],
+		"GRID_IMAGES": [
+			[
+				"one.png",
+				"two.png",
+				"three.png"
+			],
+			[
+				"four.png",
+				"five.png",
+				"six.png"
+			],
+			[
+				"seven.png",
+				"eight.png",
+				"nine.png"
+			]
+		],
+		"DEEP_LIST": [
+			{
+				"PROP1": "val1",
+				"PROP2": 4,
+				"PROP3": [
+					"hello",
+					"world"
+				],
+				"PROP4": [
+					{
+						"WORD": "hello",
+						"LANGUAGE": "english"
+					},
+					{
+						"WORD": "hallo",
+						"LANGUAGE": "german"
+					}
+				]
+			},
+			{
+				"PROP1": "val2",
+				"PROP5": false
+			}
+		],
 		"LABELED_COLOR": "red",
 		"TRANSPARENT_COLOR": "transparent",
 		"RGB_COLOR": "rgb(255, 0, 0)",
