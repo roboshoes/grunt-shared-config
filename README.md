@@ -181,8 +181,8 @@ For the following examples let's assume we supply this `config.json`.
 	"car": {
 		"blue": "#0000FF",
 		"green": "#00FF00"
-	}
-	"some-text": "'some text content'"
+	},
+	"some-text": "'some text content'",
 	"path": "some/path/to/some/file.png"
 }
 ```
