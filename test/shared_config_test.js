@@ -49,6 +49,20 @@ exports.shared_config = {
 		test.done();
 	},
 
+	json_options: function (test) {
+		test.expect(2);
+
+		var files = {
+			json: [ grunt.file.read("tmp/config.json"), grunt.file.read("test/expected/config.json") ],
+			json_yml: [ grunt.file.read("tmp/config_yml.json"), grunt.file.read("test/expected/config.json") ]
+		};
+
+		test.equal( files.json[0], files.json[1], "JSON should be equal" );
+		test.equal( files.json_yml[ 0 ], files.json_yml[ 1 ], "JSON (yml source) should be equal." );
+
+		test.done();
+	},
+
 	js_options: function( test ) {
 		test.expect( 2 );
 

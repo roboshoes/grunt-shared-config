@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/MathiasPaumgarten/grunt-shared-config.png?branch=master)](https://travis-ci.org/MathiasPaumgarten/grunt-shared-config)
 
-> Create config files for CSS preprocessors (SASS/SCSS/LESS/Stylus) and JS from one source
+> Create config files for CSS preprocessors (SASS/SCSS/LESS/Stylus) and JS/JSON from one source
 
 ## Getting Started
 This plugin requires Grunt `~0.4.0`
@@ -22,7 +22,7 @@ grunt.loadNpmTasks( "grunt-shared-config" );
 ## The "shared_config" task
 
 ### Overview
-This task helps you to create multiple config files in SCSS/SASS/LESS/Stylus/JS/JS (AMD flavored).
+This task helps you to create multiple config files in SCSS/SASS/LESS/Stylus/JS/JSON/JS (AMD flavored).
 
 ### Options
 
@@ -43,7 +43,7 @@ $animationSpeed: 2s;    // camelcase
 Type: `String`
 Default value: `"uppercase"`
 
-Same as `options.cssFormat` but for js files.
+Same as `options.cssFormat` but for js/json files.
 
 
 #### options.amd
@@ -88,7 +88,7 @@ false:
 Type: `String`
 Default value: `options`
 
-This value is only relevant if `options.amd` is set to `false`. This String determines the name of the config object (for JavaScript).
+This value is only relevant if `options.amd` is set to `false`. This String determines the name of the config object (for JavaScript and JSON).
 
 
 #### options.namespace
@@ -155,7 +155,7 @@ Contains a single config file (JSON or YAML) or an array of files. The config fi
 #### dest
 Type: `String` or `Array`
 
-Contains all output files. Format is detected by file extension. *Available extension: `.js`, `.sass`, `.scss`, `.styl`, `.less`*
+Contains all output files. Format is detected by file extension. *Available extension: `.js`, `.json`, `.sass`, `.scss`, `.styl`, `.less`*
 
 
 #### files
@@ -187,7 +187,7 @@ For the following examples let's assume we supply this `config.json`.
 }
 ```
 
-__NOTE__: While converting the variables for JS, it strips all units (such as `px`, `%`, etc.) and also converts percenteges from `33%` to `0.33`.
+__NOTE__: While converting the variables for JS/JSON, it strips all units (such as `px`, `%`, etc.) and also converts percenteges from `33%` to `0.33`.
 __NOTE__: Value that must be exported as String must start and end with *'*.
 
 #### AMD and SCSS files.

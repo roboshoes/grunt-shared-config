@@ -1,0 +1,8 @@
+{
+	"js": {
+		"space_in_paren": true,
+		"space_after_anon_function": false,
+        "break_chained_methods": false,
+        "keep_array_indentation": false
+	}
+}
