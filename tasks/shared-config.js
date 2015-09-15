@@ -235,6 +235,13 @@ module.exports = function( grunt ) {
 			return options.singlequote ? output.replace( /"/g, "'" ) : output;
 		}
 
+		function generateJSON(data) {
+			var preparedData = prepareValues(data);
+			
+			var content = JSON.stringify(preparedData, null, options.indention);
+			return options.singlequote ? content.replace(/"/g, "'") : content;
+		}
+
 		function generateAMD( data ) {
 			var preparedData = prepareValues( data );
 			var content = JSON.stringify( preparedData, null, options.indention );
@@ -474,6 +481,10 @@ module.exports = function( grunt ) {
 				if ( fileType === "scss" && options.useSassMaps ) {
 
 					generator = generateSassMaps;
+
+				} else if (fileType === "json") {
+
+					generator = generateJSON;
 
 				} else if ( mout.array.contains( fileExtensions.css, fileType ) ) {
 
