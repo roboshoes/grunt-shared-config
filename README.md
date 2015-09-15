@@ -245,7 +245,7 @@ $height: 120px;
 $width: 500px;
 $amount: 33%;
 $animation-speed: 100s;
-$color: #BEBEBE";
+$color: #BEBEBE;
 $labeled-color: red;
 $transform: rotateY(0deg) translateZ(288px);
 $car-blue: #0000FF;
@@ -304,7 +304,7 @@ $height: 120px;
 $width: 500px;
 $amount: 33%;
 $animation-speed: 100s;
-$color: #BEBEBE";
+$color: #BEBEBE;
 $car-blue: #0000FF;
 $car-green: #00FF00;
 ```
@@ -509,3 +509,4 @@ $globalConfig: (
 * [@benib](https://github.com/benib) Beni B.
 * [@barraq](https://github.com/barraq) Rémi Barraquand
 * [@Kraku](https://github.com/Kraku) Maciej Podsiedlak
+* [@jGleitz](https://github.com/jGleitz) Joshua Gleitze
