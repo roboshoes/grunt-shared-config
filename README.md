@@ -1,6 +1,8 @@
 # grunt-shared-config
 
-[![Build Status](https://travis-ci.org/MathiasPaumgarten/grunt-shared-config.png?branch=master)](https://travis-ci.org/MathiasPaumgarten/grunt-shared-config)
+[![Build Status](https://travis-ci.org/MathiasPaumgarten/grunt-shared-config.svg?branch=master)](https://travis-ci.org/MathiasPaumgarten/grunt-shared-config)
+[![Downloads](https://img.shields.io/npm/dm/grunt-shared-config.svg)](https://www.npmjs.com/package/grunt-shared-config)
+[![Version](https://img.shields.io/npm/v/grunt-shared-config.svg)](https://www.npmjs.com/package/grunt-shared-config)
 
 > Create config files for CSS preprocessors (SASS/SCSS/LESS/Stylus) and JS/JSON from one source
 
