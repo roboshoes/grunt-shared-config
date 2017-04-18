@@ -3,13 +3,11 @@
 	"description": "Create config files for SASS/SCSS/LESS/Stylus and JS from one source",
 	"version": "0.3.17",
 	"homepage": "https://github.com/MathiasPaumgarten/grunt-shared-config",
-
 	"author": {
 		"name": "Mathias Paumgarten",
 		"email": "mail@mathias-paumgarten.com",
 		"url": "http://mathias-paumgarten.com"
 	},
-
 	"contributors": [
 		{
 			"name": "Tobias Klika",
@@ -24,33 +22,26 @@
 			"email": "dev@remibarraquand.com"
 		}
 	],
-
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/MathiasPaumgarten/grunt-shared-config"
 	},
-
 	"bugs": {
 		"url": "https://github.com/MathiasPaumgarten/grunt-shared-config/issues"
 	},
-
 	"licenses": [
 		{
 			"type": "MIT",
 			"url": "/blob/master/LICENSE-MIT"
 		}
 	],
-
 	"main": "Gruntfile.js",
-
 	"engines": {
 		"node": ">=4.0.0"
 	},
-
 	"scripts": {
 		"test": "grunt test"
 	},
-
 	"devDependencies": {
 		"grunt-contrib-jshint": "~1.0.0",
 		"grunt-contrib-clean": "~1.0.0",
@@ -59,15 +50,12 @@
 		"grunt": "~0.4.5",
 		"grunt-cli": "~0.1.13"
 	},
-
 	"peerDependencies": {
 		"grunt": ">=0.4.0"
 	},
-
 	"dependencies": {
 		"mout": "~0.11.1"
 	},
-
 	"keywords": [
 		"gruntplugin",
 		"sass",
